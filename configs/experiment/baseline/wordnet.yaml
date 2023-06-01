@@ -1,0 +1,26 @@
+# @package _global_
+
+defaults:
+  - override /model: vocabulary_free_clip.yaml
+  - override /model/vocabulary: retrieval.yaml
+
+project_name: "vocabulary-free-image-classification"
+tags: ["baseline", "lower"]
+train: False
+test: True
+seed: 1234
+
+data:
+  batch_size: 64
+  num_workers: 16
+
+model:
+  vocabulary:
+    retrieval_client:
+      index_name: "ViT-L-14_WORDNET"
+
+logger:
+  wandb:
+    tags: ${tags}
+    project: ${project_name}
+    group: "wordnet"

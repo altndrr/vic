@@ -1,0 +1,6 @@
+{
+    "ViT-L-14_CC12M": "./artifacts/models/databases/cc12m/vit-l-14/",
+    "ViT-L-14_ENGLISH_WORDS": "./artifacts/models/databases/english_words/vit-l-14/",
+    "ViT-L-14_PMD_TOP5": "./artifacts/models/databases/pmd_top5/vit-l-14/",
+    "ViT-L-14_WORDNET": "./artifacts/models/databases/wordnet/vit-l-14/"
+}

@@ -1,0 +1,7 @@
+_target_: src.models.CaSED
+
+defaults:
+  - vocabulary: retrieval.yaml
+
+model_name: "ViT-L-14"
+alpha: 0.5

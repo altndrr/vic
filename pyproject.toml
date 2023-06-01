@@ -1,0 +1,105 @@
+[build-system]
+requires = ["flit_core >=3.2,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "vic"
+version = "1.0.0"
+description = "Vocabulary-free Image Classification"
+readme = "README.md"
+requires-python = ">=3.9,<3.11"
+license = {file = "LICENCE"}
+authors = [{name = "Alessandro Conti", email = "alessandro.conti.97@gmail.com"}]
+classifiers = ["License :: OSI Approved :: MIT License"]
+
+dependencies = [
+    # --------- pytorch --------- #
+    "torch == 2.0.1",
+    "torchvision == 0.15.2",
+    "lightning == 2.0.2",
+    "torchmetrics == 0.11.0",
+    # ---------- hydra ---------- #
+    "hydra-core == 1.3.2",
+    "hydra-colorlog == 1.2.0",
+    "hydra-optuna-sweeper == 1.2.0",
+    # --------- loggers --------- #
+    "wandb == 0.15.2",
+    # ------ models ------ #
+    "open_clip_torch==2.20.0",
+    "salesforce-lavis == 1.0.2",
+    "transformers == 4.26.1",
+    # ---------- others --------- #
+    "flair == 0.12.2",
+    "gdown == 4.4.0",
+    "inflect == 6.0.4",
+    "kaggle == 1.5.13",
+    "lovely-tensors == 0.1.15",
+    "nltk == 3.8.1",
+    "pandas == 2.0.1",
+    "pyrootutils == 1.0.4",
+    "rich == 13.3.5",
+    "scikit-learn == 1.2.2"
+]
+
+[project.optional-dependencies]
+dev = [
+    "black == 23.3.0",
+    "flake8 == 6.0.0",
+    "Flake8-pyproject == 1.2.3",
+    "ipython == 8.13.2",
+    "isort == 5.12.0",
+    "pre-commit == 3.3.2",
+    "pytype == 2022.12.9",
+    "sh == 2.0.4",
+]
+test = [
+    "pytest == 7.3.1",
+    "sh == 2.0.4",
+]
+
+[project.urls]
+source = "https://github.com/altndrr/vic"
+
+[tool.black]
+line_length = 99
+
+[tool.flake8]
+count = true
+ignore = ["E402"]
+per-file-ignores = ["__init__.py:F401"]
+exclude = ["data/*","logs/*"]
+max-line-length = 99
+
+[tool.flit.module]
+name = "src"
+
+[tool.isort]
+profile = "black"
+line_length = 99
+
+[tool.pytest.ini_options]
+addopts = [
+  "--color=yes",
+  "--durations=0",
+  "--strict-markers",
+  "--doctest-modules",
+]
+filterwarnings = [
+  "ignore::DeprecationWarning",
+  "ignore::UserWarning",
+]
+log_cli = "True"
+markers = [
+  "slow: slow tests",
+  "train: tests that train models",
+]
+minversion = "6.0"
+testpaths = "tests/"
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: nocover",
+    "raise NotImplementedError",
+    "raise NotImplementedError()",
+    "if __name__ == .__main__.:",
+]

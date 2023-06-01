@@ -1,0 +1,6 @@
+# Automatically monitor and logs learning rate for learning rate schedulers during training.
+# Look at the above link for more detailed information.
+learning_rate_monitor:
+  _target_: lightning.pytorch.callbacks.LearningRateMonitor
+  logging_interval: "epoch" # 'epoch', 'step', or None
+  log_momentum: False # logs the momentum or betas value for optimizers that support it

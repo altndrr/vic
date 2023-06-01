@@ -1,0 +1,10 @@
+_target_: src.models.components.vocabularies.RetrievalVocabulary
+
+retrieval_client:
+  _target_: src.models.components.retrieval.RetrievalClient
+  url: "http://localhost:1234/knn-service"
+  index_name: "ViT-L-14_PMD_TOP5"
+  aesthetic_score: 9
+  aesthetic_weight: 0.5
+  modality: "text"
+  num_samples: 10

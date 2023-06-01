@@ -1,0 +1,5 @@
+_target_: src.data.ImageNet
+data_dir: ${paths.data_dir}
+batch_size: 32
+_metadata_:
+  num_classes: 1000

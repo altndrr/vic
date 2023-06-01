@@ -1,0 +1,132 @@
+---
+title: "Vocabulary-free Image Classification"
+title-block-style: none
+
+author:
+  - name: Alessandro Conti
+    affiliations:
+      - ref: unitn
+    corresponding: true
+    email: alessandro.conti-1@unitn.it
+  - name: Enrico Fini
+    affiliations:
+      - ref: unitn
+  - name: Massimiliano Mancini
+    affiliations:
+      - ref: unitn
+  - name: Paolo Rota
+    affiliations:
+      - ref: unitn
+  - name: Yiming Wang
+    affiliations:
+      - ref: fbk
+  - name: Elisa Ricci
+    affiliations:
+      - ref: unitn
+      - ref: fbk
+
+affiliations:
+  - id: unitn
+    name: University of Trento
+  - id: fbk
+    name: Fondazione Bruno Kessler (FBK)
+
+bibliography: assets/bib/references.bib
+
+filters:
+  - abstract-section
+  - authors-block
+  - lightbox
+
+lightbox:
+  match: auto
+  effect: fade
+  desc-position: bottom
+  loop: false
+---
+
+[![](https://img.shields.io/badge/code-github.altndrr%2Fvic-blue.svg)](https://github.com/altndrr/vic)
+[![](http://img.shields.io/badge/paper-arxiv.2306.00917-B31B1B.svg)](https://arxiv.org/abs/2306.00917)
+[![](https://img.shields.io/badge/website-gh--pages.altndrr%2Fvic-success.svg)](https://altndrr.github.io/vic/)
+
+
+## Abstract
+
+Recent advances in large vision-language models have revolutionized the image classification paradigm. Despite showing impressive zero-shot capabilities, a pre-defined set of categories, a.k.a. the vocabulary, is assumed at test time for composing the textual prompts. However, such assumption can be impractical when the semantic context is unknown and evolving. We thus formalize a novel task, termed as Vocabulary-free Image Classification (VIC), where we aim to assign to an input image a class that resides in an unconstrained language-induced semantic space, without the prerequisite of a known vocabulary. VIC is a challenging task as the semantic space is extremely large, containing millions of concepts, with hard-to-discriminate fine-grained categories. In this work, we first empirically verify that representing this semantic space by means of an external vision-language database is the most effective way to obtain semantically relevant content for classifying the image. We then propose Category Search from External Databases (CaSED), a method that exploits a pre-trained vision-language model and an external vision-language database to address VIC in a training-free manner. CaSED first extracts a set of candidate categories from captions retrieved from the database based on their semantic similarity to the image, and then assigns to the image the best matching candidate category according to the same vision-language model. Experiments on benchmark datasets validate that CaSED outperforms other complex vision-language frameworks, while being efficient with much fewer parameters, paving the way for future research in this direction.
+
+## Task definition
+
+Vocabulary-free Image Classification aims to assign a class $c$ to an image $x$ *without* prior knowledge on $C$, thus operating on the semantic class space $\mathcal{S}$ that contains all the possible concepts. Formally, we want to produce a function $f$ mapping an image to a semantic label in $\mathcal{S}$, *i.e.* $f: \mathcal{X}\rightarrow \mathcal{S}$.
+Our task definition implies that at test time, the function $f$ has only access to an input image $x$ and a large source of semantic concepts that approximates $\mathcal{S}$.
+VIC is a challenging classification task by definition due to the extremely large cardinality of the semantic classes in $\mathcal{S}$.
+As an example, ImageNet-21k [@imagenet], one of the largest classification benchmarks, is $200$ times smaller than the semantic classes in BabelNet [@babelnet]. This large search space poses a prime challenge for distinguishing fine-grained concepts across multiple domains as well as ones that naturally follow a long-tailed distribution.
+
+
+::: {layout="[[40,60]]"}
+![Vision-Language Model (VLM)-based classification](./assets/images/task_left.png){#fig-task_left}
+
+![Vocabulary-free Image Classification](./assets/images/task_right.png){#fig-task_right}
+:::
+
+## Method overview
+
+Our proposed method CaSED finds the best matching category within the unconstrained semantic space by multimodal data from large vision-language databases.
+[@fig-method] provides an overview of our proposed method. We first retrieve the semantically most similar captions from a database, from which we extract a set of candidate categories by applying text parsing and filtering techniques. We further score the candidates using the multimodal aligned representation of the large pre-trained VLM, *i.e.* CLIP [@clip], to obtain the best-matching category.
+
+![Overview of CaSED. Given an input image, CaSED retrieves the most relevant captions from an external database filtering them to extract candidate categories. We classify image-to-text and text-to-text, using the retrieved captions centroid as the textual counterpart of the input image.](./assets/images/method.png){#fig-method}
+
+## Experiments
+
+### Datasets
+
+We follow existing works [@tpt; @coop] and use ten datasets that feature both coarse-grained and fine-grained classification in different domains: Caltech-101 (C101) [@caltech101], DTD [@dtd], EuroSAT (ESAT) [@eurosat], FGVC-Aircraft (Airc.) [@fgvc_aircraft], Flowers-102 (Flwr) [@flowers102], Food-101 (Food) [@food101], Oxford Pets (Pets), Stanford Cars (Cars) [@stanford_cars], SUN397 (SUN) [@sun397], and UCF101 (UCF) [@ucf101].
+Additionally, we used ImageNet [@imagenet] for hyperparameters tuning.
+
+### Quantitative results
+
+We evaluate CaSED in comparison to other VLM-based methods on the novel task Vocabulary-free Image Classification with extensive benchmark datasets covering both coarse-grained and fine-grained classification.
+
+![Cluster Accuracy on the ten datasets. Green is our method, gray shows the upper bound.](./assets/images/results_cluster_acc.png){#fig-results_cluster_acc group="quantitative-results"}
+
+![Semantic Similarity on the ten datasets. Values are multiplied by x100 for readability. Green highlights our method and gray indicates the upper bound.](./assets/images/results_semantic_sim.png){#fig-results_semantic_sim group="quantitative-results"}
+
+![Semantic IoU on the ten datasets. Green is our method, gray shows the upper bound.](./assets/images/results_semantic_iou.png){#fig-results_semantic_iou group="quantitative-results"}
+
+### Qualitative results
+
+We report some qualitative results of our method applied on three different datasets, namely Caltech-101 (first row), Food101 (second row), and SUN397 (last row), where the first is coarse, and the last two are fine-grained, focusing on food plates and places respectively.
+For each, we present a batch of five images, where the first three represent success cases and the last two show interesting failure cases. Each sample shows the image we input to our method with the top-5 candidate classes. Note that for each image CaSED generates an average of 35 candidate names, but we show only the five with the highest scores as computed in Eq. 6 in the main manuscript.
+
+::: {layout="[[20,20,20,20,20], [20,20,20,20,20], [20,20,20,20,20]]"}
+
+![](./assets/images/qualitative/caltech101_chandelier.png){group="qualitative-results"}
+
+![](./assets/images/qualitative/caltech101_dalmatian.png){group="qualitative-results"}
+
+![](./assets/images/qualitative/caltech101_ibis.png){group="qualitative-results"}
+
+![](./assets/images/qualitative/caltech101_gramophone.png){group="qualitative-results"}
+
+![](./assets/images/qualitative/caltech101_cellphone.png){group="qualitative-results"}
+
+![](./assets/images/qualitative/food101_bibimbap.png){group="qualitative-results"}
+
+![](./assets/images/qualitative/food101_cheesecake.png){group="qualitative-results"}
+
+![](./assets/images/qualitative/food101_guacamole.png){group="qualitative-results"}
+
+![](./assets/images/qualitative/food101_caprese_salad.png){group="qualitative-results"}
+
+![](./assets/images/qualitative/food101_pizza.png){group="qualitative-results"}
+
+![](./assets/images/qualitative/sun397_galley.png){group="qualitative-results"}
+
+![](./assets/images/qualitative/sun397_shed.png){group="qualitative-results"}
+
+![](./assets/images/qualitative/sun397_restaurant.png){group="qualitative-results"}
+
+![](./assets/images/qualitative/sun397_football.png){group="qualitative-results"}
+
+![](./assets/images/qualitative/sun397_garbage_dump.png){group="qualitative-results"}
+
+:::

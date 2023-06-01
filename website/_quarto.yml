@@ -1,0 +1,44 @@
+project:
+  type: website
+
+website:
+  title: "Vocabulary-free Image Classification"
+  site-url: "https://altndrr.github.io/vic/"
+  image: "./assets/images/method.png"
+  favicon: "./favicon.png"
+
+  navbar:
+    logo: "./favicon.png"
+    background: primary
+    pinned: true
+
+  page-footer:
+    center: "Copyright 2023, Alessandro Conti"
+    border: false
+
+  search: false
+
+  reader-mode: false
+  repo-url: "https://github.com/altndrr/vic"
+  repo-subdir: "website"
+  repo-actions: [edit, issue, source]
+
+  twitter-card:
+    creator: "@altndrr"
+    title: "Vocabulary-free Image Classification"
+    description: "Recent advances in large vision-language models have revolutionized the image classification paradigm. Despite showing impressive zero-shot capabilities, a pre-defined set of categories, a.k.a. the vocabulary, is assumed at test time for composing the textual prompts. However, such assumption can be impractical when the semantic context is unknown and evolving. We thus formalize a novel task, termed as Vocabulary-free Image Classification (VIC), where we aim to assign to an input image a class that resides in an unconstrained language-induced semantic space, without the prerequisite of a known vocabulary. VIC is a challenging task as the semantic space is extremely large, containing millions of concepts, with hard-to-discriminate fine-grained categories. In this work, we first empirically verify that representing this semantic space by means of an external vision-language database is the most effective way to obtain semantically relevant content for classifying the image. We then propose Category Search from External Databases (CaSED), a method that exploits a pre-trained vision-language model and an external vision-language database to address VIC in a training-free manner. CaSED first extracts a set of candidate categories from captions retrieved from the database based on their semantic similarity to the image, and then assigns to the image the best matching candidate category according to the same vision-language model. Experiments on benchmark datasets validate that CaSED outperforms other complex vision-language frameworks, while being efficient with much fewer parameters, paving the way for future research in this direction."
+    image: "./assets/images/method.png"
+
+format:
+  html:
+    anchor-sections: true
+    css: ./assets/css/styles.css
+    citations-hover: true
+    footnotes-hover: false
+    smooth-scroll: true
+    theme: flatly
+    toc: true
+    toc-depth: 3
+    toc-expand: true
+    toc-location: right
+    toc-title: Contents

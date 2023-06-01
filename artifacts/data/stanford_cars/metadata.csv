@@ -1,0 +1,197 @@
+idx,folder_name,class_name
+0,,2000 AM General Hummer SUV
+1,,2012 Acura RL Sedan
+2,,2012 Acura TL Sedan
+3,,2008 Acura TL Type-S
+4,,2012 Acura TSX Sedan
+5,,2001 Acura Integra Type R
+6,,2012 Acura ZDX Hatchback
+7,,2012 Aston Martin V8 Vantage Convertible
+8,,2012 Aston Martin V8 Vantage Coupe
+9,,2012 Aston Martin Virage Convertible
+10,,2012 Aston Martin Virage Coupe
+11,,2008 Audi RS 4 Convertible
+12,,2012 Audi A5 Coupe
+13,,2012 Audi TTS Coupe
+14,,2012 Audi R8 Coupe
+15,,1994 Audi V8 Sedan
+16,,1994 Audi 100 Sedan
+17,,1994 Audi 100 Wagon
+18,,2011 Audi TT Hatchback
+19,,2011 Audi S6 Sedan
+20,,2012 Audi S5 Convertible
+21,,2012 Audi S5 Coupe
+22,,2012 Audi S4 Sedan
+23,,2007 Audi S4 Sedan
+24,,2012 Audi TT RS Coupe
+25,,2012 BMW ActiveHybrid 5 Sedan
+26,,2012 BMW 1 Series Convertible
+27,,2012 BMW 1 Series Coupe
+28,,2012 BMW 3 Series Sedan
+29,,2012 BMW 3 Series Wagon
+30,,2007 BMW 6 Series Convertible
+31,,2007 BMW X5 SUV
+32,,2012 BMW X6 SUV
+33,,2012 BMW M3 Coupe
+34,,2010 BMW M5 Sedan
+35,,2010 BMW M6 Convertible
+36,,2012 BMW X3 SUV
+37,,2012 BMW Z4 Convertible
+38,,2012 Bentley Continental Supersports Conv. Convertible
+39,,2009 Bentley Arnage Sedan
+40,,2011 Bentley Mulsanne Sedan
+41,,2012 Bentley Continental GT Coupe
+42,,2007 Bentley Continental GT Coupe
+43,,2007 Bentley Continental Flying Spur Sedan
+44,,2009 Bugatti Veyron 16.4 Convertible
+45,,2009 Bugatti Veyron 16.4 Coupe
+46,,2012 Buick Regal GS
+47,,2007 Buick Rainier SUV
+48,,2012 Buick Verano Sedan
+49,,2012 Buick Enclave SUV
+50,,2012 Cadillac CTS-V Sedan
+51,,2012 Cadillac SRX SUV
+52,,2007 Cadillac Escalade EXT Crew Cab
+53,,2012 Chevrolet Silverado 1500 Hybrid Crew Cab
+54,,2012 Chevrolet Corvette Convertible
+55,,2012 Chevrolet Corvette ZR1
+56,,2007 Chevrolet Corvette Ron Fellows Edition Z06
+57,,2012 Chevrolet Traverse SUV
+58,,2012 Chevrolet Camaro Convertible
+59,,2010 Chevrolet HHR SS
+60,,2007 Chevrolet Impala Sedan
+61,,2012 Chevrolet Tahoe Hybrid SUV
+62,,2012 Chevrolet Sonic Sedan
+63,,2007 Chevrolet Express Cargo Van
+64,,2012 Chevrolet Avalanche Crew Cab
+65,,2010 Chevrolet Cobalt SS
+66,,2010 Chevrolet Malibu Hybrid Sedan
+67,,2009 Chevrolet TrailBlazer SS
+68,,2012 Chevrolet Silverado 2500HD Regular Cab
+69,,2007 Chevrolet Silverado 1500 Classic Extended Cab
+70,,2007 Chevrolet Express Van
+71,,2007 Chevrolet Monte Carlo Coupe
+72,,2007 Chevrolet Malibu Sedan
+73,,2012 Chevrolet Silverado 1500 Extended Cab
+74,,2012 Chevrolet Silverado 1500 Regular Cab
+75,,2009 Chrysler Aspen SUV
+76,,2010 Chrysler Sebring Convertible
+77,,2012 Chrysler Town and Country Minivan
+78,,2010 Chrysler 300 SRT-8
+79,,2008 Chrysler Crossfire Convertible
+80,,2008 Chrysler PT Cruiser Convertible
+81,,2002 Daewoo Nubira Wagon
+82,,2012 Dodge Caliber Wagon
+83,,2007 Dodge Caliber Wagon
+84,,1997 Dodge Caravan Minivan
+85,,2010 Dodge Ram Pickup 3500 Crew Cab
+86,,2009 Dodge Ram Pickup 3500 Quad Cab
+87,,2009 Dodge Sprinter Cargo Van
+88,,2012 Dodge Journey SUV
+89,,2010 Dodge Dakota Crew Cab
+90,,2007 Dodge Dakota Club Cab
+91,,2008 Dodge Magnum Wagon
+92,,2011 Dodge Challenger SRT8
+93,,2012 Dodge Durango SUV
+94,,2007 Dodge Durango SUV
+95,,2012 Dodge Charger Sedan
+96,,2009 Dodge Charger SRT-8
+97,,1998 Eagle Talon Hatchback
+98,,2012 FIAT 500 Abarth
+99,,2012 FIAT 500 Convertible
+100,,2012 Ferrari FF Coupe
+101,,2012 Ferrari California Convertible
+102,,2012 Ferrari 458 Italia Convertible
+103,,2012 Ferrari 458 Italia Coupe
+104,,2012 Fisker Karma Sedan
+105,,2012 Ford F-450 Super Duty Crew Cab
+106,,2007 Ford Mustang Convertible
+107,,2007 Ford Freestar Minivan
+108,,2009 Ford Expedition EL SUV
+109,,2012 Ford Edge SUV
+110,,2011 Ford Ranger SuperCab
+111,,2006 Ford GT Coupe
+112,,2012 Ford F-150 Regular Cab
+113,,2007 Ford F-150 Regular Cab
+114,,2007 Ford Focus Sedan
+115,,2012 Ford E-Series Wagon Van
+116,,2012 Ford Fiesta Sedan
+117,,2012 GMC Terrain SUV
+118,,2012 GMC Savana Van
+119,,2012 GMC Yukon Hybrid SUV
+120,,2012 GMC Acadia SUV
+121,,2012 GMC Canyon Extended Cab
+122,,1993 Geo Metro Convertible
+123,,2010 HUMMER H3T Crew Cab
+124,,2009 HUMMER H2 SUT Crew Cab
+125,,2012 Honda Odyssey Minivan
+126,,2007 Honda Odyssey Minivan
+127,,2012 Honda Accord Coupe
+128,,2012 Honda Accord Sedan
+129,,2012 Hyundai Veloster Hatchback
+130,,2012 Hyundai Santa Fe SUV
+131,,2012 Hyundai Tucson SUV
+132,,2012 Hyundai Veracruz SUV
+133,,2012 Hyundai Sonata Hybrid Sedan
+134,,2007 Hyundai Elantra Sedan
+135,,2012 Hyundai Accent Sedan
+136,,2012 Hyundai Genesis Sedan
+137,,2012 Hyundai Sonata Sedan
+138,,2012 Hyundai Elantra Touring Hatchback
+139,,2012 Hyundai Azera Sedan
+140,,2012 Infiniti G Coupe IPL
+141,,2011 Infiniti QX56 SUV
+142,,2008 Isuzu Ascender SUV
+143,,2012 Jaguar XK XKR
+144,,2012 Jeep Patriot SUV
+145,,2012 Jeep Wrangler SUV
+146,,2012 Jeep Liberty SUV
+147,,2012 Jeep Grand Cherokee SUV
+148,,2012 Jeep Compass SUV
+149,,2008 Lamborghini Reventon Coupe
+150,,2012 Lamborghini Aventador Coupe
+151,,2012 Lamborghini Gallardo LP 570-4 Superleggera
+152,,2001 Lamborghini Diablo Coupe
+153,,2012 Land Rover Range Rover SUV
+154,,2012 Land Rover LR2 SUV
+155,,2011 Lincoln Town Car Sedan
+156,,2012 MINI Cooper Roadster Convertible
+157,,2012 Maybach Landaulet Convertible
+158,,2011 Mazda Tribute SUV
+159,,2012 McLaren MP4-12C Coupe
+160,,1993 Mercedes-Benz 300-Class Convertible
+161,,2012 Mercedes-Benz C-Class Sedan
+162,,2009 Mercedes-Benz SL-Class Coupe
+163,,2012 Mercedes-Benz E-Class Sedan
+164,,2012 Mercedes-Benz S-Class Sedan
+165,,2012 Mercedes-Benz Sprinter Van
+166,,2012 Mitsubishi Lancer Sedan
+167,,2012 Nissan Leaf Hatchback
+168,,2012 Nissan NV Passenger Van
+169,,2012 Nissan Juke Hatchback
+170,,1998 Nissan 240SX Coupe
+171,,1999 Plymouth Neon Coupe
+172,,2012 Porsche Panamera Sedan
+173,,2012 Ram C/V Cargo Van Minivan
+174,,2012 Rolls-Royce Phantom Drophead Coupe Convertible
+175,,2012 Rolls-Royce Ghost Sedan
+176,,2012 Rolls-Royce Phantom Sedan
+177,,2012 Scion xD Hatchback
+178,,2009 Spyker C8 Convertible
+179,,2009 Spyker C8 Coupe
+180,,2007 Suzuki Aerio Sedan
+181,,2012 Suzuki Kizashi Sedan
+182,,2012 Suzuki SX4 Hatchback
+183,,2012 Suzuki SX4 Sedan
+184,,2012 Tesla Model S Sedan
+185,,2012 Toyota Sequoia SUV
+186,,2012 Toyota Camry Sedan
+187,,2012 Toyota Corolla Sedan
+188,,2012 Toyota 4Runner SUV
+189,,2012 Volkswagen Golf Hatchback
+190,,1991 Volkswagen Golf Hatchback
+191,,2012 Volkswagen Beetle Hatchback
+192,,2012 Volvo C30 Hatchback
+193,,1993 Volvo 240 Sedan
+194,,2007 Volvo XC90 SUV
+195,,2012 smart fortwo Convertible

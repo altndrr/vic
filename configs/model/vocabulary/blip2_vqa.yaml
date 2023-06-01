@@ -1,0 +1,4 @@
+_target_: src.models.components.vocabularies.BLIP2VQAVocabulary
+model_name: "blip2_t5"
+model_type: "pretrain_flant5xl"
+question: "Question: what's in the image? Answer:"

@@ -1,0 +1,24 @@
+# @package _global_
+
+defaults:
+  - override /model: cased.yaml
+  - override /model/vocabulary: retrieval.yaml
+
+project_name: "vocabulary-free-image-classification"
+tags: ["method"]
+train: False
+test: True
+seed: 1234
+
+data:
+  batch_size: 64
+  num_workers: 16
+
+model:
+  alpha: 0.5
+
+logger:
+  wandb:
+    tags: ${tags}
+    project: ${project_name}
+    group: "cased"

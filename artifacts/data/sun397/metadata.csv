@@ -1,0 +1,398 @@
+idx,folder_name,class_name
+0,a/abbey,abbey
+1,a/airplane_cabin,airplane_cabin
+2,a/airport_terminal,airport_terminal
+3,a/alley,alley
+4,a/amphitheater,amphitheater
+5,a/amusement_arcade,amusement_arcade
+6,a/amusement_park,amusement_park
+7,a/anechoic_chamber,anechoic_chamber
+8,a/apartment_building/outdoor,outdoor apartment_building
+9,a/apse/indoor,indoor apse
+10,a/aquarium,aquarium
+11,a/aqueduct,aqueduct
+12,a/arch,arch
+13,a/archive,archive
+14,a/arrival_gate/outdoor,outdoor arrival_gate
+15,a/art_gallery,art_gallery
+16,a/art_school,art_school
+17,a/art_studio,art_studio
+18,a/assembly_line,assembly_line
+19,a/athletic_field/outdoor,outdoor athletic_field
+20,a/atrium/public,public atrium
+21,a/attic,attic
+22,a/auditorium,auditorium
+23,a/auto_factory,auto_factory
+24,b/badlands,badlands
+25,b/badminton_court/indoor,indoor badminton_court
+26,b/baggage_claim,baggage_claim
+27,b/bakery/shop,shop bakery
+28,b/balcony/exterior,exterior balcony
+29,b/balcony/interior,interior balcony
+30,b/ball_pit,ball_pit
+31,b/ballroom,ballroom
+32,b/bamboo_forest,bamboo_forest
+33,b/banquet_hall,banquet_hall
+34,b/bar,bar
+35,b/barn,barn
+36,b/barndoor,barndoor
+37,b/baseball_field,baseball_field
+38,b/basement,basement
+39,b/basilica,basilica
+40,b/basketball_court/outdoor,outdoor basketball_court
+41,b/bathroom,bathroom
+42,b/batters_box,batters_box
+43,b/bayou,bayou
+44,b/bazaar/indoor,indoor bazaar
+45,b/bazaar/outdoor,outdoor bazaar
+46,b/beach,beach
+47,b/beauty_salon,beauty_salon
+48,b/bedroom,bedroom
+49,b/berth,berth
+50,b/biology_laboratory,biology_laboratory
+51,b/bistro/indoor,indoor bistro
+52,b/boardwalk,boardwalk
+53,b/boat_deck,boat_deck
+54,b/boathouse,boathouse
+55,b/bookstore,bookstore
+56,b/booth/indoor,indoor booth
+57,b/botanical_garden,botanical_garden
+58,b/bow_window/indoor,indoor bow_window
+59,b/bow_window/outdoor,outdoor bow_window
+60,b/bowling_alley,bowling_alley
+61,b/boxing_ring,boxing_ring
+62,b/brewery/indoor,indoor brewery
+63,b/bridge,bridge
+64,b/building_facade,building_facade
+65,b/bullring,bullring
+66,b/burial_chamber,burial_chamber
+67,b/bus_interior,bus_interior
+68,b/butchers_shop,butchers_shop
+69,b/butte,butte
+70,c/cabin/outdoor,outdoor cabin
+71,c/cafeteria,cafeteria
+72,c/campsite,campsite
+73,c/campus,campus
+74,c/canal/natural,natural canal
+75,c/canal/urban,urban canal
+76,c/candy_store,candy_store
+77,c/canyon,canyon
+78,c/car_interior/backseat,backseat car_interior
+79,c/car_interior/frontseat,frontseat car_interior
+80,c/carrousel,carrousel
+81,c/casino/indoor,indoor casino
+82,c/castle,castle
+83,c/catacomb,catacomb
+84,c/cathedral/indoor,indoor cathedral
+85,c/cathedral/outdoor,outdoor cathedral
+86,c/cavern/indoor,indoor cavern
+87,c/cemetery,cemetery
+88,c/chalet,chalet
+89,c/cheese_factory,cheese_factory
+90,c/chemistry_lab,chemistry_lab
+91,c/chicken_coop/indoor,indoor chicken_coop
+92,c/chicken_coop/outdoor,outdoor chicken_coop
+93,c/childs_room,childs_room
+94,c/church/indoor,indoor church
+95,c/church/outdoor,outdoor church
+96,c/classroom,classroom
+97,c/clean_room,clean_room
+98,c/cliff,cliff
+99,c/cloister/indoor,indoor cloister
+100,c/closet,closet
+101,c/clothing_store,clothing_store
+102,c/coast,coast
+103,c/cockpit,cockpit
+104,c/coffee_shop,coffee_shop
+105,c/computer_room,computer_room
+106,c/conference_center,conference_center
+107,c/conference_room,conference_room
+108,c/construction_site,construction_site
+109,c/control_room,control_room
+110,c/control_tower/outdoor,outdoor control_tower
+111,c/corn_field,corn_field
+112,c/corral,corral
+113,c/corridor,corridor
+114,c/cottage_garden,cottage_garden
+115,c/courthouse,courthouse
+116,c/courtroom,courtroom
+117,c/courtyard,courtyard
+118,c/covered_bridge/exterior,exterior covered_bridge
+119,c/creek,creek
+120,c/crevasse,crevasse
+121,c/crosswalk,crosswalk
+122,c/cubicle/office,office cubicle
+123,d/dam,dam
+124,d/delicatessen,delicatessen
+125,d/dentists_office,dentists_office
+126,d/desert/sand,sand desert
+127,d/desert/vegetation,vegetation desert
+128,d/diner/indoor,indoor diner
+129,d/diner/outdoor,outdoor diner
+130,d/dinette/home,home dinette
+131,d/dinette/vehicle,vehicle dinette
+132,d/dining_car,dining_car
+133,d/dining_room,dining_room
+134,d/discotheque,discotheque
+135,d/dock,dock
+136,d/doorway/outdoor,outdoor doorway
+137,d/dorm_room,dorm_room
+138,d/driveway,driveway
+139,d/driving_range/outdoor,outdoor driving_range
+140,d/drugstore,drugstore
+141,e/electrical_substation,electrical_substation
+142,e/elevator/door,door elevator
+143,e/elevator/interior,interior elevator
+144,e/elevator_shaft,elevator_shaft
+145,e/engine_room,engine_room
+146,e/escalator/indoor,indoor escalator
+147,e/excavation,excavation
+148,f/factory/indoor,indoor factory
+149,f/fairway,fairway
+150,f/fastfood_restaurant,fastfood_restaurant
+151,f/field/cultivated,cultivated field
+152,f/field/wild,wild field
+153,f/fire_escape,fire_escape
+154,f/fire_station,fire_station
+155,f/firing_range/indoor,indoor firing_range
+156,f/fishpond,fishpond
+157,f/florist_shop/indoor,indoor florist_shop
+158,f/food_court,food_court
+159,f/forest/broadleaf,broadleaf forest
+160,f/forest/needleleaf,needleleaf forest
+161,f/forest_path,forest_path
+162,f/forest_road,forest_road
+163,f/formal_garden,formal_garden
+164,f/fountain,fountain
+165,g/galley,galley
+166,g/game_room,game_room
+167,g/garage/indoor,indoor garage
+168,g/garbage_dump,garbage_dump
+169,g/gas_station,gas_station
+170,g/gazebo/exterior,exterior gazebo
+171,g/general_store/indoor,indoor general_store
+172,g/general_store/outdoor,outdoor general_store
+173,g/gift_shop,gift_shop
+174,g/golf_course,golf_course
+175,g/greenhouse/indoor,indoor greenhouse
+176,g/greenhouse/outdoor,outdoor greenhouse
+177,g/gymnasium/indoor,indoor gymnasium
+178,h/hangar/indoor,indoor hangar
+179,h/hangar/outdoor,outdoor hangar
+180,h/harbor,harbor
+181,h/hayfield,hayfield
+182,h/heliport,heliport
+183,h/herb_garden,herb_garden
+184,h/highway,highway
+185,h/hill,hill
+186,h/home_office,home_office
+187,h/hospital,hospital
+188,h/hospital_room,hospital_room
+189,h/hot_spring,hot_spring
+190,h/hot_tub/outdoor,outdoor hot_tub
+191,h/hotel/outdoor,outdoor hotel
+192,h/hotel_room,hotel_room
+193,h/house,house
+194,h/hunting_lodge/outdoor,outdoor hunting_lodge
+195,i/ice_cream_parlor,ice_cream_parlor
+196,i/ice_floe,ice_floe
+197,i/ice_shelf,ice_shelf
+198,i/ice_skating_rink/indoor,indoor ice_skating_rink
+199,i/ice_skating_rink/outdoor,outdoor ice_skating_rink
+200,i/iceberg,iceberg
+201,i/igloo,igloo
+202,i/industrial_area,industrial_area
+203,i/inn/outdoor,outdoor inn
+204,i/islet,islet
+205,j/jacuzzi/indoor,indoor jacuzzi
+206,j/jail/indoor,indoor jail
+207,j/jail_cell,jail_cell
+208,j/jewelry_shop,jewelry_shop
+209,k/kasbah,kasbah
+210,k/kennel/indoor,indoor kennel
+211,k/kennel/outdoor,outdoor kennel
+212,k/kindergarden_classroom,kindergarden_classroom
+213,k/kitchen,kitchen
+214,k/kitchenette,kitchenette
+215,l/labyrinth/outdoor,outdoor labyrinth
+216,l/lake/natural,natural lake
+217,l/landfill,landfill
+218,l/landing_deck,landing_deck
+219,l/laundromat,laundromat
+220,l/lecture_room,lecture_room
+221,l/library/indoor,indoor library
+222,l/library/outdoor,outdoor library
+223,l/lido_deck/outdoor,outdoor lido_deck
+224,l/lift_bridge,lift_bridge
+225,l/lighthouse,lighthouse
+226,l/limousine_interior,limousine_interior
+227,l/living_room,living_room
+228,l/lobby,lobby
+229,l/lock_chamber,lock_chamber
+230,l/locker_room,locker_room
+231,m/mansion,mansion
+232,m/manufactured_home,manufactured_home
+233,m/market/indoor,indoor market
+234,m/market/outdoor,outdoor market
+235,m/marsh,marsh
+236,m/martial_arts_gym,martial_arts_gym
+237,m/mausoleum,mausoleum
+238,m/medina,medina
+239,m/moat/water,water moat
+240,m/monastery/outdoor,outdoor monastery
+241,m/mosque/indoor,indoor mosque
+242,m/mosque/outdoor,outdoor mosque
+243,m/motel,motel
+244,m/mountain,mountain
+245,m/mountain_snowy,mountain_snowy
+246,m/movie_theater/indoor,indoor movie_theater
+247,m/museum/indoor,indoor museum
+248,m/music_store,music_store
+249,m/music_studio,music_studio
+250,n/nuclear_power_plant/outdoor,outdoor nuclear_power_plant
+251,n/nursery,nursery
+252,o/oast_house,oast_house
+253,o/observatory/outdoor,outdoor observatory
+254,o/ocean,ocean
+255,o/office,office
+256,o/office_building,office_building
+257,o/oil_refinery/outdoor,outdoor oil_refinery
+258,o/oilrig,oilrig
+259,o/operating_room,operating_room
+260,o/orchard,orchard
+261,o/outhouse/outdoor,outdoor outhouse
+262,p/pagoda,pagoda
+263,p/palace,palace
+264,p/pantry,pantry
+265,p/park,park
+266,p/parking_garage/indoor,indoor parking_garage
+267,p/parking_garage/outdoor,outdoor parking_garage
+268,p/parking_lot,parking_lot
+269,p/parlor,parlor
+270,p/pasture,pasture
+271,p/patio,patio
+272,p/pavilion,pavilion
+273,p/pharmacy,pharmacy
+274,p/phone_booth,phone_booth
+275,p/physics_laboratory,physics_laboratory
+276,p/picnic_area,picnic_area
+277,p/pilothouse/indoor,indoor pilothouse
+278,p/planetarium/outdoor,outdoor planetarium
+279,p/playground,playground
+280,p/playroom,playroom
+281,p/plaza,plaza
+282,p/podium/indoor,indoor podium
+283,p/podium/outdoor,outdoor podium
+284,p/pond,pond
+285,p/poolroom/establishment,establishment poolroom
+286,p/poolroom/home,home poolroom
+287,p/power_plant/outdoor,outdoor power_plant
+288,p/promenade_deck,promenade_deck
+289,p/pub/indoor,indoor pub
+290,p/pulpit,pulpit
+291,p/putting_green,putting_green
+292,r/racecourse,racecourse
+293,r/raceway,raceway
+294,r/raft,raft
+295,r/railroad_track,railroad_track
+296,r/rainforest,rainforest
+297,r/reception,reception
+298,r/recreation_room,recreation_room
+299,r/residential_neighborhood,residential_neighborhood
+300,r/restaurant,restaurant
+301,r/restaurant_kitchen,restaurant_kitchen
+302,r/restaurant_patio,restaurant_patio
+303,r/rice_paddy,rice_paddy
+304,r/riding_arena,riding_arena
+305,r/river,river
+306,r/rock_arch,rock_arch
+307,r/rope_bridge,rope_bridge
+308,r/ruin,ruin
+309,r/runway,runway
+310,s/sandbar,sandbar
+311,s/sandbox,sandbox
+312,s/sauna,sauna
+313,s/schoolhouse,schoolhouse
+314,s/sea_cliff,sea_cliff
+315,s/server_room,server_room
+316,s/shed,shed
+317,s/shoe_shop,shoe_shop
+318,s/shopfront,shopfront
+319,s/shopping_mall/indoor,indoor shopping_mall
+320,s/shower,shower
+321,s/skatepark,skatepark
+322,s/ski_lodge,ski_lodge
+323,s/ski_resort,ski_resort
+324,s/ski_slope,ski_slope
+325,s/sky,sky
+326,s/skyscraper,skyscraper
+327,s/slum,slum
+328,s/snowfield,snowfield
+329,s/squash_court,squash_court
+330,s/stable,stable
+331,s/stadium/baseball,baseball stadium
+332,s/stadium/football,football stadium
+333,s/stage/indoor,indoor stage
+334,s/staircase,staircase
+335,s/street,street
+336,s/subway_interior,subway_interior
+337,s/subway_station/platform,platform subway_station
+338,s/supermarket,supermarket
+339,s/sushi_bar,sushi_bar
+340,s/swamp,swamp
+341,s/swimming_pool/indoor,indoor swimming_pool
+342,s/swimming_pool/outdoor,outdoor swimming_pool
+343,s/synagogue/indoor,indoor synagogue
+344,s/synagogue/outdoor,outdoor synagogue
+345,t/television_studio,television_studio
+346,t/temple/east_asia,east_asia temple
+347,t/temple/south_asia,south_asia temple
+348,t/tennis_court/indoor,indoor tennis_court
+349,t/tennis_court/outdoor,outdoor tennis_court
+350,t/tent/outdoor,outdoor tent
+351,t/theater/indoor_procenium,indoor_procenium theater
+352,t/theater/indoor_seats,indoor_seats theater
+353,t/thriftshop,thriftshop
+354,t/throne_room,throne_room
+355,t/ticket_booth,ticket_booth
+356,t/toll_plaza,toll_plaza
+357,t/topiary_garden,topiary_garden
+358,t/tower,tower
+359,t/toyshop,toyshop
+360,t/track/outdoor,outdoor track
+361,t/train_railway,train_railway
+362,t/train_station/platform,platform train_station
+363,t/tree_farm,tree_farm
+364,t/tree_house,tree_house
+365,t/trench,trench
+366,u/underwater/coral_reef,coral_reef underwater
+367,u/utility_room,utility_room
+368,v/valley,valley
+369,v/van_interior,van_interior
+370,v/vegetable_garden,vegetable_garden
+371,v/veranda,veranda
+372,v/veterinarians_office,veterinarians_office
+373,v/viaduct,viaduct
+374,v/videostore,videostore
+375,v/village,village
+376,v/vineyard,vineyard
+377,v/volcano,volcano
+378,v/volleyball_court/indoor,indoor volleyball_court
+379,v/volleyball_court/outdoor,outdoor volleyball_court
+380,w/waiting_room,waiting_room
+381,w/warehouse/indoor,indoor warehouse
+382,w/water_tower,water_tower
+383,w/waterfall/block,block waterfall
+384,w/waterfall/fan,fan waterfall
+385,w/waterfall/plunge,plunge waterfall
+386,w/watering_hole,watering_hole
+387,w/wave,wave
+388,w/wet_bar,wet_bar
+389,w/wheat_field,wheat_field
+390,w/wind_farm,wind_farm
+391,w/windmill,windmill
+392,w/wine_cellar/barrel_storage,barrel_storage wine_cellar
+393,w/wine_cellar/bottle_storage,bottle_storage wine_cellar
+394,w/wrestling_ring/indoor,indoor wrestling_ring
+395,y/yard,yard
+396,y/youth_hostel,youth_hostel

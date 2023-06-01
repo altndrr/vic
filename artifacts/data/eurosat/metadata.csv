@@ -1,0 +1,11 @@
+idx,folder_name,class_name
+0,AnnualCrop,Annual Crop Land
+1,Forest,Forest
+2,HerbaceousVegetation,Herbaceous Vegetation Land
+3,Highway,Highway or Road
+4,Industrial,Industrial Buildings
+5,Pasture,Pasture Land
+6,PermanentCrop,Permanent Crop Land
+7,Residential,Residential Buildings
+8,River,River
+9,SeaLake,Sea or Lake
