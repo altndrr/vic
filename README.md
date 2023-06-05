@@ -5,6 +5,7 @@
 <a href="https://pytorchlightning.ai/"><img alt="Lightning" src="https://img.shields.io/badge/-Lightning_2.0-792ee5?logo=pytorchlightning&logoColor=white"></a>
 
 [![](https://img.shields.io/badge/code-github.altndrr%2Fvic-blue.svg)](https://github.com/altndrr/vic)
+[![](https://img.shields.io/badge/demo-hf.altndrr%2Fvic-yellow.svg)](https://altndrr-vic.hf.space)
 [![](http://img.shields.io/badge/paper-arxiv.2306.00917-B31B1B.svg)](https://arxiv.org/abs/2306.00917)
 [![](https://img.shields.io/badge/website-gh--pages.altndrr%2Fvic-success.svg)](https://altndrr.github.io/vic/)
 
