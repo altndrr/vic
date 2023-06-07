@@ -37,7 +37,7 @@ In this work, we first empirically verify that representing this semantic space 
 
 ## Inference
 
-Our model CaSED is available on HuggingFace Hub. You can try it directly from the [demo](https://hf.altndrr.space/vic) or import it from the `transformers` library.
+Our model CaSED is available on HuggingFace Hub. You can try it directly from the [demo](https://altndrr-vic.hf.space/) or import it from the `transformers` library.
 
 To use the model from the HuggingFace Hub, you can use the following snippet:
 
