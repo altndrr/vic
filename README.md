@@ -35,6 +35,39 @@ In this work, we first empirically verify that representing this semantic space 
 
 </div>
 
+## Inference
+
+Our model CaSED is available on HuggingFace Hub. You can try it directly from the [demo](https://hf.altndrr.space/vic) or import it from the `transformers` library.
+
+To use the model from the HuggingFace Hub, you can use the following snippet:
+
+```python
+import requests
+from PIL import Image
+from transformers import AutoModel, CLIPProcessor
+
+# download an image from the internet
+url = "http://images.cocodataset.org/val2017/000000039769.jpg"
+image = Image.open(requests.get(url, stream=True).raw)
+
+# load the model and the processor
+model = AutoModel.from_pretrained("altndrr/cased", trust_remote_code=True)
+processor = CLIPProcessor.from_pretrained("openai/clip-vit-large-patch14")
+
+# get the model outputs
+images = processor(images=[image], return_tensors="pt", padding=True)
+outputs = model(images, alpha=0.5)
+labels, scores = outputs["vocabularies"][0], outputs["scores"][0]
+
+# print the top 5 most likely labels for the image
+values, indices = scores.topk(5)
+print("\nTop predictions:\n")
+for value, index in zip(values, indices):
+    print(f"{labels[index]:>16s}: {100 * value.item():.2f}%")
+```
+
+Note that our model depends on some libraries you have to install manually. Please refer to the [model card](https://huggingface.co/altndrr/cased) for further details.
+
 ## Setup
 
 ### Install dependencies
