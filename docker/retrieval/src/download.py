@@ -6,7 +6,7 @@ import gdown
 RETRIEVAL_DATABASES = {
     "cc12m": "https://drive.google.com/uc?id=1HyM4mnKSxF0sqzAe-KZL8y-cQWRPiuXn&confirm=t",
     "english_words": "https://drive.google.com/uc?id=197poGaUJVP1Mh1qPL5yaNrYJuvd3JRb-&confirm=t",
-    "pmd_top5": "https://drive.google.com/uc?id=15SDIf7KM8VIG_AxdnKkL1ODr_igOuZSD?confirm=t",
+    "pmd_top5": "https://drive.google.com/uc?id=15SDIf7KM8VIG_AxdnKkL1ODr_igOuZSD&confirm=t",
     "wordnet": "https://drive.google.com/uc?id=1q_StrVCnj8fPgvghXw-fSxp4qaSe0xvk&confirm=t",
 }
 
