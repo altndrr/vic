@@ -175,3 +175,16 @@ make clean
 # remove logs
 make clean-logs
 ```
+
+## Citation
+
+```latex
+@misc{conti2023vocabularyfree,
+      title={Vocabulary-free Image Classification},
+      author={Alessandro Conti and Enrico Fini and Massimiliano Mancini and Paolo Rota and Yiming Wang and Elisa Ricci},
+      year={2023},
+      eprint={2306.00917},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV}
+}
+```
