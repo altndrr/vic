@@ -151,7 +151,17 @@ class RetrievalClient:
             "num_images": self._num_samples,
             "num_result_ids": self._num_samples,
         }
-        response = requests.post(self._url, data=json.dumps(payload), timeout=30.0).json()
+
+        try:
+            response = requests.post(self._url, data=json.dumps(payload), timeout=30.0).json()
+        except requests.exceptions.ConnectionError:
+            raise ConnectionError(
+                "Could not connect to the retrieval server. Did you start it? "
+                "To start the server, open a terminal and run `docker compose build` "
+                "to build the docker images and then "
+                "`docker compose --profile retrieval-server up` to start the server.\n"
+                "Refer to the README for more information."
+            )
 
         formatted_response = []
         for res in response:
