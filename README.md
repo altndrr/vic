@@ -19,9 +19,9 @@ Recent advances in large vision-language models have revolutionized the image cl
 
 <div align="center">
 
-| <img src="website/assets/images/task_left.png">  | <img src="website/assets/images/task_right.png"> |
-| :----------------------------------------------: | :----------------------------------------------: |
-| Vision Language Model (VLM)-based classification |       Vocabulary-free Image Classification       |
+|         <img src="assets/task_left.png">         |  <img src="assets/task_right.png">   |
+| :----------------------------------------------: | :----------------------------------: |
+| Vision Language Model (VLM)-based classification | Vocabulary-free Image Classification |
 
 </div>
 
@@ -29,7 +29,7 @@ In this work, we first empirically verify that representing this semantic space 
 
 <div align="center">
 
-|                                                                                                                          <img src="website/assets/images/method.png">                                                                                                                          |
+|                                                                                                                                 <img src="assets/method.png">                                                                                                                                  |
 | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
 | Overview of CaSED. Given an input image, CaSED retrieves the most relevant captions from an external database filtering them to extract candidate categories. We classify image-to-text and text-to-text, using the retrieved captions centroid as the textual counterpart of the input image. |
 
