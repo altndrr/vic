@@ -63,4 +63,9 @@ main() {
     fi
 }
 
+# activate conda environment
+export PATH="$HOME/miniconda3/bin:$PATH"
+eval "$(conda shell.bash hook)"
+conda activate env
+
 main "$@"

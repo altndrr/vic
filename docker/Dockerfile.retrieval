@@ -19,11 +19,10 @@ RUN echo "Install miniconda..." && \
 
 FROM builder AS requirements
 SHELL ["/bin/bash", "-c"]
-COPY ./docker/retrieval/requirements.txt /app/requirements.txt
+COPY ./docker/retrieval/environment.yml /app/environment.yml
 RUN echo "Installing dependencies..." && \
     apt-get update --fix-missing && \
-    pip3 install -r /app/requirements.txt
-
+    conda env create -f /app/environment.yml
 
 FROM requirements AS compiler
 SHELL ["/bin/bash", "-c"]
