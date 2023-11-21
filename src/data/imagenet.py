@@ -1,4 +1,5 @@
 import zipfile
+from contextlib import suppress
 from pathlib import Path
 from typing import Any, Optional
 
@@ -8,10 +9,8 @@ from rich.progress import track
 from src.data._base import BaseDataModule
 from src.data.components.datasets import ImageDataset
 
-try:
+with suppress(OSError):
     import kaggle
-except OSError:
-    pass
 
 
 class ImageNet(BaseDataModule):
