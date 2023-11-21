@@ -1,8 +1,8 @@
 # @package _global_
 
 defaults:
-  - override /model: cased.yaml
-  - override /model/vocabulary: retrieval.yaml
+  - override /model: cased
+  - override /model/vocabulary: retrieval
 
 project_name: "vocabulary-free-image-classification"
 tags: ["method"]

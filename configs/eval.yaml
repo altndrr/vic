@@ -2,16 +2,16 @@
 
 defaults:
   - _self_
-  - data: caltech101.yaml # choose data with `test_dataloader()` for evaluation
+  - data: caltech101
   - model: null
   - callbacks:
-      - rich_progress_bar.yaml
+      - rich_progress_bar
   - logger: null
-  - trainer: default.yaml
-  - paths: default.yaml
-  - extras: default.yaml
-  - hydra: default.yaml
-  - experiment: baseline/clip.yaml
+  - trainer: default
+  - paths: default
+  - extras: default
+  - hydra: default
+  - experiment: baseline/clip
 
 task_name: "eval"
 
