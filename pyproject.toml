@@ -70,6 +70,14 @@ per-file-ignores = ["__init__.py:F401"]
 exclude = ["data/*","logs/*"]
 max-line-length = 99
 
+[tool.interrogate]
+fail-under = 100
+ignore-init-module = true
+ignore-init-method = true
+ignore-magic = true
+ignore-module = true
+ignore-nested-functions = true
+
 [tool.flit.module]
 name = "src"
 
