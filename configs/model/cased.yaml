@@ -4,4 +4,4 @@ defaults:
   - vocabulary: retrieval
 
 model_name: "ViT-L-14"
-alpha: 0.5
+alpha: 0.7
