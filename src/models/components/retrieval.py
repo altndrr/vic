@@ -18,7 +18,7 @@ RETRIEVAL_DATABASES_URLS = {
     "wordnet": "https://drive.google.com/uc?id=1q_StrVCnj8fPgvghXw-fSxp4qaSe0xvk&confirm=t",
 }
 
-log = utils.get_logger(__name__, rank_zero_only=True)
+log = utils.get_logger(__name__)
 
 
 def download_retrieval_databases(artifact_dir: str = "artifacts/"):
