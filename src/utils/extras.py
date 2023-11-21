@@ -34,11 +34,6 @@ def extras(cfg: DictConfig) -> None:
         log.info("Enforcing tags! <cfg.extras.enforce_tags=True>")
         rich_utils.enforce_tags(cfg, save_to_file=True)
 
-    # pretty print config tree using Rich library
-    if cfg.extras.get("print_config"):
-        log.info("Printing config tree with Rich! <cfg.extras.print_config=True>")
-        rich_utils.print_config_tree(cfg, resolve=True, save_to_file=True)
-
     # monkey-patch tensor classes to have pretty representations
     if cfg.extras.get("lovely_tensors"):
         log.info("Applying monkey-patch for lovely-tensors! <cfg.extras.lovely_tensors=True>")
@@ -49,3 +44,8 @@ def extras(cfg: DictConfig) -> None:
         matmul_precision = cfg.extras.matmul_precision
         log.info(f"Setting precision of matrix multiplication! <cfg.extras.{matmul_precision=}>")
         torch.set_float32_matmul_precision(matmul_precision)
+
+    # pretty print config tree using Rich library
+    if cfg.extras.get("print_config"):
+        log.info("Printing config tree with Rich! <cfg.extras.print_config=True>")
+        rich_utils.print_config_tree(cfg, resolve=True, save_to_file=True)
