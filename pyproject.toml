@@ -4,7 +4,7 @@ build-backend = "flit_core.buildapi"
 
 [project]
 name = "vic"
-version = "1.0.0"
+version = "2.0.0"
 description = "Vocabulary-free Image Classification"
 readme = "README.md"
 requires-python = ">=3.9,<3.11"
