@@ -1,3 +1,7 @@
+# list of loggers to disable
+disable_loggers:
+  - faiss.loader
+
 # disable python warnings if they annoy you
 ignore_warnings: False
 

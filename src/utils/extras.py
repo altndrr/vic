@@ -1,3 +1,4 @@
+import logging
 import warnings
 
 import lovely_tensors as lt
@@ -23,6 +24,13 @@ def extras(cfg: DictConfig) -> None:
     if not cfg.get("extras"):
         log.warning("Extras config not found! <cfg.extras=null>")
         return
+
+    # disable specific loggers
+    if cfg.extras.get("disable_loggers"):
+        disable_loggers = cfg.extras.disable_loggers
+        log.info(f"Ignoring loggers! <cfg.extras.{disable_loggers=}>")
+        for disable_logger in disable_loggers:
+            logging.getLogger(disable_logger).setLevel(logging.ERROR)
 
     # disable python warnings
     if cfg.extras.get("ignore_warnings"):
