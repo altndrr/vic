@@ -2,6 +2,7 @@ from importlib.util import find_spec
 from typing import Optional
 
 from lightning.pytorch.utilities import rank_zero_only
+from omegaconf import OmegaConf
 
 from src.utils import logging_utils
 
@@ -20,7 +21,7 @@ def log_hyperparameters(object_dict: dict) -> None:
     """
     hparams = {}
 
-    cfg = object_dict["cfg"]
+    cfg = OmegaConf.to_container(object_dict["cfg"])
     model = object_dict["model"]
     trainer = object_dict["trainer"]
 
