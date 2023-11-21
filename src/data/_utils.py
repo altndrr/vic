@@ -11,7 +11,7 @@ from src import utils
 log = utils.get_logger(__name__)
 
 
-def download_data(url: str, target: Path, from_gdrive: bool = False):
+def download_data(url: str, target: Path, from_gdrive: bool = False) -> None:
     """Download data from a URL.
 
     Args:
@@ -38,7 +38,7 @@ def download_data(url: str, target: Path, from_gdrive: bool = False):
                     f.write(chunk)
 
 
-def extract_data(target):
+def extract_data(target: Path) -> None:
     """Extract data from an archive.
 
     Supported formats: zip, tar, tar.gz.

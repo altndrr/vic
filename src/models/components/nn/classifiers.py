@@ -17,7 +17,13 @@ class NearestNeighboursClassifier(torch.nn.Module):
         self.scale = scale
         self.tau = tau
 
-    def forward(self, query: torch.Tensor, supports: torch.Tensor):
+    def forward(self, query: torch.Tensor, supports: torch.Tensor) -> torch.Tensor:
+        """Forward pass.
+
+        Args:
+            query (torch.Tensor): Query tensor.
+            supports (torch.Tensor): Supports tensor.
+        """
         query = query / query.norm(dim=-1, keepdim=True)
         supports = supports / supports.norm(dim=-1, keepdim=True)
 

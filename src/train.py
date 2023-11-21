@@ -84,6 +84,11 @@ def train(cfg: DictConfig) -> tuple[dict, dict]:
 
 @hydra.main(version_base="1.3", config_path="../configs", config_name="train.yaml")
 def main(cfg: DictConfig) -> Optional[float]:
+    """Main entrypoint for training.
+
+    Args:
+        cfg (DictConfig): Configuration composed by Hydra.
+    """
     # apply extra utilities
     # (e.g. ask for tags if none are provided in cfg, print cfg tree, etc.)
     utils.extras(cfg)

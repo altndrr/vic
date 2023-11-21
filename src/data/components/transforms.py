@@ -1,6 +1,6 @@
 import re
 from abc import ABC, abstractmethod
-from typing import Any, Optional, Union, cast
+from typing import Optional, Union, cast
 
 import inflect
 import nltk
@@ -35,7 +35,7 @@ class BaseTextTransform(ABC):
     """Base class for string transforms."""
 
     @abstractmethod
-    def __call__(self, text: str):
+    def __call__(self, text: str) -> str:
         raise NotImplementedError
 
     def __repr__(self) -> str:
@@ -49,7 +49,12 @@ class DynamicResize(T.Resize):
     output size based on the aspect ratio of the first input image.
     """
 
-    def forward(self, img):
+    def forward(self, img) -> PIL.Image.Image:
+        """Forward pass of the transform.
+
+        Args:
+            img (PIL Image): Image to resize.
+        """
         if isinstance(self.size, int):
             _, h, w = F.get_dimensions(img)
             aspect_ratio = w / h
@@ -66,7 +71,7 @@ class DynamicResize(T.Resize):
 class DropFileExtensions(BaseTextTransform):
     """Remove file extensions from the input text."""
 
-    def __call__(self, text: str):
+    def __call__(self, text: str) -> str:
         """
         Args:
             text (str): Text to remove file extensions from.
@@ -79,7 +84,7 @@ class DropFileExtensions(BaseTextTransform):
 class DropNonAlpha(BaseTextTransform):
     """Remove non-alpha words from the input text."""
 
-    def __call__(self, text: str):
+    def __call__(self, text: str) -> str:
         """
         Args:
             text (str): Text to remove non-alpha words from.
@@ -100,7 +105,7 @@ class DropShortWords(BaseTextTransform):
         super().__init__()
         self.min_length = min_length
 
-    def __call__(self, text: str):
+    def __call__(self, text: str) -> str:
         """
         Args:
             text (str): Text to remove short words from.
@@ -120,7 +125,7 @@ class DropSpecialCharacters(BaseTextTransform):
     hyphen, period, apostrophe, or ampersand.
     """
 
-    def __call__(self, text: str):
+    def __call__(self, text: str) -> str:
         """
         Args:
             text (str): Text to remove special characters from.
@@ -136,7 +141,7 @@ class DropTokens(BaseTextTransform):
     Tokens are defined as strings enclosed in angle brackets, e.g. <token>.
     """
 
-    def __call__(self, text: str):
+    def __call__(self, text: str) -> str:
         """
         Args:
             text (str): Text to remove tokens from.
@@ -149,7 +154,7 @@ class DropTokens(BaseTextTransform):
 class DropURLs(BaseTextTransform):
     """Remove URLs from the input text."""
 
-    def __call__(self, text: str):
+    def __call__(self, text: str) -> str:
         """
         Args:
             text (str): Text to remove URLs from.
@@ -170,7 +175,7 @@ class DropWords(BaseTextTransform):
         self.words = words
         self.pattern = r"\b(?:{})\b".format("|".join(words))
 
-    def __call__(self, text: str):
+    def __call__(self, text: str) -> str:
         """
         Args:
             text (str): Text to remove words from.
@@ -205,7 +210,7 @@ class FilterPOS(BaseTextTransform):
         elif engine == "flair":
             self.tagger = SequenceTagger.load("flair/pos-english-fast").predict
 
-    def __call__(self, text: str):
+    def __call__(self, text: str) -> str:
         """
         Args:
             text (str): Text to remove words with specific POS tags from.
@@ -262,7 +267,7 @@ class FrequencyMinWordCount(BaseTextTransform):
         super().__init__()
         self.min_count = min_count
 
-    def __call__(self, text: str):
+    def __call__(self, text: str) -> str:
         """
         Args:
             text (str): Text to remove infrequent words from.
@@ -298,7 +303,7 @@ class FrequencyTopK(BaseTextTransform):
         super().__init__()
         self.top_k = top_k
 
-    def __call__(self, text: str):
+    def __call__(self, text: str) -> str:
         """
         Args:
             text (str): Text to remove infrequent words from.
@@ -325,7 +330,7 @@ class FrequencyTopK(BaseTextTransform):
 class ReplaceSeparators(BaseTextTransform):
     """Replace underscores and dashes with spaces."""
 
-    def __call__(self, text: str):
+    def __call__(self, text: str) -> str:
         """
         Args:
             text (str): Text to replace separators in.
@@ -341,7 +346,7 @@ class ReplaceSeparators(BaseTextTransform):
 class RemoveDuplicates(BaseTextTransform):
     """Remove duplicate words from the input text."""
 
-    def __call__(self, text: str):
+    def __call__(self, text: str) -> str:
         """
         Args:
             text (str): Text to remove duplicate words from.
@@ -365,7 +370,11 @@ class TextCompose:
     def __init__(self, transforms: list[BaseTextTransform]) -> None:
         self.transforms = transforms
 
-    def __call__(self, text: Union[str, list[str]]) -> Any:
+    def __call__(self, text: Union[str, list[str]]) -> list[str]:
+        """
+        Args:
+            text (Union[str, list[str]]): Text to transform.
+        """
         if isinstance(text, list):
             text = " ".join(text)
 
@@ -390,7 +399,7 @@ class ToRGBTensor(T.ToTensor):
     tensor.
     """
 
-    def __call__(self, pic: Union[PIL.Image.Image, np.ndarray, torch.Tensor]):
+    def __call__(self, pic: Union[PIL.Image.Image, np.ndarray, torch.Tensor]) -> torch.Tensor:
         """
         Args:
             pic (PIL Image | numpy.ndarray | torch.Tensor): Image to be converted to tensor.
@@ -410,7 +419,7 @@ class ToRGBTensor(T.ToTensor):
 class ToLowercase(BaseTextTransform):
     """Convert text to lowercase."""
 
-    def __call__(self, text: str):
+    def __call__(self, text: str) -> str:
         """
         Args:
             text (str): Text to convert to lowercase.
@@ -427,7 +436,7 @@ class ToSingular(BaseTextTransform):
         super().__init__()
         self.transform = inflect.engine().singular_noun
 
-    def __call__(self, text: str):
+    def __call__(self, text: str) -> str:
         """
         Args:
             text (str): Text to convert to singular form.
@@ -453,8 +462,8 @@ class ToSingular(BaseTextTransform):
         return f"{self.__class__.__name__}()"
 
 
-def default_preprocess(size: Optional[int] = None) -> T.Compose:
-    """Preprocess input images with preprocessing transforms.
+def default_image_preprocess(size: Optional[int] = None) -> T.Compose:
+    """Default preprocessing transforms for images.
 
     Args:
         size (int): Size to resize image to.
@@ -468,8 +477,8 @@ def default_preprocess(size: Optional[int] = None) -> T.Compose:
     return transforms
 
 
-def default_vocabulary_transforms() -> TextCompose:
-    """Preprocess input text with preprocessing transforms."""
+def default_vocab_transform() -> TextCompose:
+    """Default transforms for vocabs."""
     words_to_drop = [
         "image",
         "photo",

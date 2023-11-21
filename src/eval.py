@@ -58,6 +58,11 @@ def evaluate(cfg: DictConfig) -> tuple[dict, dict]:
 
 @hydra.main(version_base="1.3", config_path="../configs", config_name="eval.yaml")
 def main(cfg: DictConfig) -> None:
+    """Main entrypoint for evaluation.
+
+    Args:
+        cfg (DictConfig): Configuration composed by Hydra.
+    """
     # apply extra utilities
     # (e.g. ask for tags if none are provided in cfg, print cfg tree, etc.)
     utils.extras(cfg)

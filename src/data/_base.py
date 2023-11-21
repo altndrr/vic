@@ -20,7 +20,6 @@ class BaseDataModule(ABC, LightningDataModule):
         num_workers (int): Number of workers. Defaults to 0.
         pin_memory (bool): Pin memory. Defaults to False.
         image_size (int): Image size. Default to 224.
-        train_cycle_mode (str): Train cycle mode. Default to "max_size_cycle".
 
     Attributes:
         name (str): Name of the dataset.
@@ -41,9 +40,8 @@ class BaseDataModule(ABC, LightningDataModule):
         data_dir: str = "data/",
         train_val_split: tuple[float, float] = (0.9, 0.1),
         **kwargs,
-    ):
+    ) -> None:
         super().__init__()
-        self.save_hyperparameters(logger=False, ignore=["_metadata_"])
 
         assert self.name is not None, "name must be set"
         assert sum(train_val_split) == 1.0, "train_val_split must sum to 1.0"
@@ -56,11 +54,12 @@ class BaseDataModule(ABC, LightningDataModule):
         self.data_test: Optional[Dataset] = None
 
     @property
-    def num_classes(self):
+    def num_classes(self) -> int:
+        """Get number of classes."""
         return len(self.classes) or -1
 
     @property
-    def dataloader_kwargs(self):
+    def dataloader_kwargs(self) -> dict:
         """Get default kwargs for dataloader."""
         return {
             "batch_size": self.hparams.get("batch_size", 64),
@@ -77,17 +76,23 @@ class BaseDataModule(ABC, LightningDataModule):
         return "dataloader_0"
 
     @property
-    def preprocess(self):
+    def preprocess(self) -> T.Compose:
+        """Get preprocess transform."""
         return self._preprocess
 
     @preprocess.setter
-    def preprocess(self, transform: Union[list, T.Compose]):
+    def preprocess(self, transform: Union[list, T.Compose]) -> None:
+        """Set preprocess transform.
+
+        Args:
+            transform (Union[list, T.Compose]): Transform to be applied.
+        """
         if not isinstance(transform, T.Compose):
             transform = T.Compose(transform)
 
         self._preprocess = transform
 
-        # Propagate changes to data sets
+        # propagate changes to data sets
         for split in ["train", "val", "test"]:
             data = getattr(self, f"data_{split}")
             if data is None:
@@ -103,25 +108,28 @@ class BaseDataModule(ABC, LightningDataModule):
                 data.transform = self.preprocess
 
     @abstractmethod
-    def prepare_data(self):
+    def prepare_data(self) -> None:
         """Download data if needed."""
         raise NotImplementedError
 
     @abstractmethod
-    def setup(self, stage: Optional[str] = None):
+    def setup(self, stage: Optional[str] = None) -> None:
         """Load data.
 
         Set variables: `self.data_train`, `self.data_val`, `self.data_test`.
         """
         raise NotImplementedError
 
-    def train_dataloader(self):
+    def train_dataloader(self) -> DataLoader:
+        """Get train dataloader."""
         return DataLoader(
             dataset=self.data_train, **self.dataloader_kwargs, shuffle=True, drop_last=True
         )
 
-    def val_dataloader(self):
+    def val_dataloader(self) -> DataLoader:
+        """Get validation dataloader."""
         return DataLoader(dataset=self.data_val, **self.dataloader_kwargs, shuffle=False)
 
-    def test_dataloader(self):
+    def test_dataloader(self) -> DataLoader:
+        """Get test dataloader."""
         return DataLoader(dataset=self.data_test, **self.dataloader_kwargs, shuffle=False)

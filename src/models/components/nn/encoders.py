@@ -1,5 +1,6 @@
+import open_clip
+import open_clip.transformer
 import torch
-from open_clip.transformer import Transformer
 
 
 class LanguageTransformer(torch.nn.Module):
@@ -15,13 +16,13 @@ class LanguageTransformer(torch.nn.Module):
 
     def __init__(
         self,
-        model: Transformer,
+        model: open_clip.transformer.Transformer,
         token_embedding: torch.nn.Embedding,
         positional_embedding: torch.nn.Parameter,
         ln_final: torch.nn.LayerNorm,
         text_projection: torch.nn.Parameter,
         attn_mask: torch.Tensor,
-    ):
+    ) -> None:
         super().__init__()
         self.transformer = model
         self.token_embedding = token_embedding
@@ -32,9 +33,12 @@ class LanguageTransformer(torch.nn.Module):
         self.register_buffer("attn_mask", attn_mask, persistent=False)
 
     def forward(self, text: torch.Tensor) -> torch.Tensor:
-        cast_dtype = self.transformer.get_cast_dtype()
+        """Forward pass.
 
-        """Forward pass for the text encoder."""
+        Args:
+            text (torch.Tensor): Text tensor.
+        """
+        cast_dtype = self.transformer.get_cast_dtype()
         x = self.token_embedding(text).to(cast_dtype)
 
         x = x + self.positional_embedding.to(cast_dtype)

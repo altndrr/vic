@@ -1,6 +1,7 @@
 from pathlib import Path
 from typing import Any, Callable, Optional, Union
 
+from PIL import Image
 from torchvision.datasets.vision import VisionDataset
 
 __all__ = ["ImageDataset"]
@@ -17,16 +18,18 @@ class ImageDataset(VisionDataset):
     Args:
         root (str): Root directory of dataset where `images` are found.
         images (list[str], optional): List of images. Defaults to None.
-        labels (list[int], optional): List of labels. Defaults to None.
+        labels (list[int] | list[list[int]], optional): List of labels (supports multi-labels).
+            Defaults to None.
         class_names (list[str], optional): List of class names. Defaults to None.
+        classes_to_idx (list[str], optional): Mapping from class names to class indices. Defaults
+            to None.
         transform (Callable | list[Callable], optional): A function/transform that takes in a
             PIL image and returns a transformed version. If a list of transforms is provided, they
             are applied depending on the target label. Defaults to None.
         target_transform (Callable, optional): A function/transform that takes in the target and
-            transforms it.
+            transforms it. Defaults to None.
         return_id (bool, optional): If `True`, the dataset will return also the image path of the
             sample. Defaults to `True`.
-
 
      Attributes:
         class_names (list): List of the class names sorted alphabetically.
@@ -40,8 +43,9 @@ class ImageDataset(VisionDataset):
         self,
         root: str,
         images: Optional[list[str]] = None,
-        labels: Optional[list[int]] = None,
+        labels: Optional[Union[list[int], list[list[int]]]] = None,
         class_names: Optional[list[str]] = None,
+        classes_to_idx: Optional[dict[str, int]] = None,
         transform: Optional[Union[Callable, list[Callable]]] = None,
         target_transform: Optional[Callable] = None,
         return_id: bool = True,
@@ -63,7 +67,7 @@ class ImageDataset(VisionDataset):
         self.targets = labels
 
         self.class_names = class_names
-        self.classes_to_idx = {c: i for i, c in enumerate(self.class_names)}
+        self.classes_to_idx = classes_to_idx or {c: i for i, c in enumerate(self.class_names)}
 
         self.root = root
         self.transform = transform
@@ -116,8 +120,6 @@ def default_loader(path: str) -> Any:
     Returns:
         PIL.Image: The image.
     """
-    from PIL import Image
-
     with open(path, "rb") as f:
         img = Image.open(f)
         return img.convert("RGB")
