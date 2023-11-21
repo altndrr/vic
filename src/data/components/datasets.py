@@ -1,6 +1,7 @@
 from pathlib import Path
 from typing import Any, Callable, Optional, Union
 
+import torch
 from PIL import Image
 from torchvision.datasets.vision import VisionDataset
 
@@ -48,7 +49,6 @@ class ImageDataset(VisionDataset):
         classes_to_idx: Optional[dict[str, int]] = None,
         transform: Optional[Union[Callable, list[Callable]]] = None,
         target_transform: Optional[Callable] = None,
-        return_id: bool = True,
     ) -> None:
         if not images:
             images = [str(path) for path in Path(root).glob("*/*")]
@@ -73,26 +73,37 @@ class ImageDataset(VisionDataset):
         self.transform = transform
         self.target_transform = target_transform
 
-        self.return_id = return_id
         self.loader = default_loader
 
-    def __getitem__(self, index: int):
-        path, target = self.samples[index]
-        sample = self.loader(path)
+    def __getitem__(self, index: int) -> dict:
+        path, targets_idx = self.samples[index]
+        targets_idx = [targets_idx] if isinstance(targets_idx, int) else targets_idx
+        targets_name = [self.class_names[t] for t in targets_idx]
+
+        targets = torch.tensor(targets_idx, dtype=torch.long)
+        image_pil = self.loader(path)
         if self.transform is not None:
             if isinstance(self.transform, list):
-                sample = self.transform[target](sample)
+                image_tensor = self.transform[targets](image_pil)
             else:
-                sample = self.transform(sample)
+                image_tensor = self.transform(image_pil)
         if self.target_transform is not None:
-            target = self.target_transform(target)
+            targets = [self.target_transform(t) for t in targets]
 
-        if self.return_id:
-            return sample, target, self.images[index]
+        targets_one_hot = torch.zeros(len(self.class_names), dtype=torch.long)
+        targets_one_hot[targets] = 1
 
-        return sample, target
+        data = {
+            "images_fp": path,
+            "images_pil": image_pil,
+            "images_tensor": image_tensor,
+            "targets_idx": targets_idx,
+            "targets_one_hot": targets_one_hot,
+            "targets_name": targets_name,
+        }
+        return data
 
-    def __len__(self):
+    def __len__(self) -> int:
         return len(self.samples)
 
     def __repr__(self) -> str:

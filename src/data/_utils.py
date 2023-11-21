@@ -4,11 +4,27 @@ from pathlib import Path
 
 import gdown
 import requests
+import torch
 from rich.progress import track
 
-from src import utils
 
-log = utils.get_logger(__name__)
+def default_collate_fn(batch: list[dict]) -> dict:
+    """Collate function for dataloader.
+
+    Args:
+        batch (list[dict]): List of samples.
+    """
+    assert isinstance(batch[0], dict)
+
+    collated = {}
+    for key in batch[0].keys():
+        data_type = type(batch[0][key])
+        if data_type == torch.Tensor:
+            collated[key] = torch.stack([item[key] for item in batch])
+        else:
+            collated[key] = [item[key] for item in batch]
+
+    return collated
 
 
 def download_data(url: str, target: Path, from_gdrive: bool = False) -> None:

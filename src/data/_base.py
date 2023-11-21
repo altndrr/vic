@@ -5,7 +5,8 @@ import torchvision.transforms as T
 from lightning import LightningDataModule
 from torch.utils.data import DataLoader, Dataset
 
-from src.data.components.transforms import default_preprocess
+from src.data._utils import default_collate_fn
+from src.data.components.transforms import default_image_preprocess
 
 
 class BaseDataModule(ABC, LightningDataModule):
@@ -47,11 +48,19 @@ class BaseDataModule(ABC, LightningDataModule):
         assert sum(train_val_split) == 1.0, "train_val_split must sum to 1.0"
         assert train_val_split[1] > 0, "train_val_split must have a non-zero val split"
 
-        self._preprocess = default_preprocess(size=self.hparams.get("image_size", 224))
-
         self.data_train: Optional[Dataset] = None
         self.data_val: Optional[Dataset] = None
         self.data_test: Optional[Dataset] = None
+
+        # save hyperparameters
+        kwargs["batch_size"] = kwargs.get("batch_size", 64)
+        kwargs["num_workers"] = kwargs.get("num_workers", 0)
+        kwargs["pin_memory"] = kwargs.get("pin_memory", False)
+        kwargs["image_size"] = kwargs.get("image_size", 224)
+        self.save_hyperparameters(logger=False, ignore=["_metadata_"])
+
+        # define default preprocess
+        self._preprocess = default_image_preprocess(size=self.hparams.image_size)
 
     @property
     def num_classes(self) -> int:
@@ -62,9 +71,10 @@ class BaseDataModule(ABC, LightningDataModule):
     def dataloader_kwargs(self) -> dict:
         """Get default kwargs for dataloader."""
         return {
-            "batch_size": self.hparams.get("batch_size", 64),
-            "num_workers": self.hparams.get("num_workers", 0),
-            "pin_memory": self.hparams.get("pin_memory", False),
+            "batch_size": self.hparams.batch_size,
+            "num_workers": self.hparams.num_workers,
+            "pin_memory": self.hparams.pin_memory,
+            "collate_fn": default_collate_fn,
         }
 
     def dataloader_name(self, *args, **kwargs) -> str:
