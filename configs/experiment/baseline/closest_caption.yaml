@@ -16,8 +16,7 @@ data:
 
 model:
   vocabulary:
-    retrieval_client:
-      num_samples: 1
+    num_samples: 1
 
 logger:
   wandb:

@@ -16,8 +16,7 @@ data:
 
 model:
   vocabulary:
-    retrieval_client:
-      index_name: "ViT-L-14_WORDNET"
+    database_name: "ViT-L-14_WORDNET"
 
 logger:
   wandb:

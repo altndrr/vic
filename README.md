@@ -128,18 +128,6 @@ python src/train.py data=ucf101 experiment=baseline/clip model=clip ++model.mode
 
 Note that since all our approaches are training-free, there is virtually no difference between `train.py` and `eval.py`. However, we still keep them separate for clarity.
 
-### Docker containers
-
-We provide Docker images for the deployment of containerized services. Currently, the only available container is the one for the retrieval server. To start the server, run the following command:
-
-```bash
-# build the Docker images
-docker compose build
-
-# start the server
-docker compose --profile retrieval-server up
-```
-
 ## Development
 
 ### Install pre-commit hooks

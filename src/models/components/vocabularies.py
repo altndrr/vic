@@ -1,13 +1,15 @@
+import json
 from abc import ABC, abstractmethod
 from pathlib import Path
 from typing import Optional
 
+import numpy as np
 import pandas as pd
 import torch
 from lavis.models import load_model_and_preprocess
 from PIL import Image
 
-from src.models.components.retrieval import RetrievalClient
+from src.models.components.retrieval import RetrievalDatabase, download_retrieval_databases
 
 __all__ = ["BLIP2VQAVocabulary", "ImageNetVocabulary", "RetrievalVocabulary"]
 
@@ -15,12 +17,16 @@ __all__ = ["BLIP2VQAVocabulary", "ImageNetVocabulary", "RetrievalVocabulary"]
 class BaseVocabulary(ABC, torch.nn.Module):
     """Base class for a vocabulary for image classification."""
 
-    def __call__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
+        super().__init__(*args, **kwargs)
+
+    def __call__(self, *args, **kwargs) -> list[list[str]]:
         values = self.forward(*args, **kwargs)
         return values
 
     @abstractmethod
-    def forward(self, *args, **kwargs):
+    def forward(self, *args, **kwargs) -> list[list[str]]:
+        """Forward pass."""
         raise NotImplementedError
 
 
@@ -98,6 +104,7 @@ class ImageNetVocabulary(BaseVocabulary):
         self._words = class_names
 
     def forward(self, *args, **kwargs) -> list[list[str]]:
+        """Create a vocabulary for a batch of images."""
         batch_size = max(len(kwargs.get("images_z", kwargs.get("images_fp", []))), 1)
 
         return [self._words] * batch_size
@@ -107,12 +114,33 @@ class RetrievalVocabulary(BaseVocabulary):
     """Vocabulary based on captions from an external database.
 
     Args:
-        retrieval_client (RetrievalClient): Client for querying the retrieval system.
+        database_name (str): Name of the database to use.
+        databases_dict_fp (str): Path to the databases dictionary file.
+        num_samples (int): Number of samples to return. Default is 40.
     """
 
-    def __init__(self, *args, retrieval_client: RetrievalClient, **kwargs):
+    def __init__(
+        self, *args, database_name: str, databases_dict_fp: str, num_samples: int = 10, **kwargs
+    ):
         super().__init__(*args, **kwargs)
-        self.retrieval_client = retrieval_client
+        self.database_name = database_name
+        self.databases_dict_fp = databases_dict_fp
+        self.num_samples = num_samples
+
+        with open(databases_dict_fp, encoding="utf-8") as f:
+            databases_dict = json.load(f)
+
+        download_retrieval_databases()
+        self.database = RetrievalDatabase(databases_dict[database_name])
+
+    def __call__(self, *args, **kwargs) -> list[list[str]]:
+        values = super().__call__(*args, **kwargs)
+
+        # keep only the `num_samples` first words
+        num_samples = self.num_samples
+        values = [value[:num_samples] for value in values]
+
+        return values
 
     def forward(self, *args, images_z: Optional[torch.Tensor] = None, **kwargs) -> list[list[str]]:
         """Create a vocabulary for a batch of images.
@@ -122,12 +150,14 @@ class RetrievalVocabulary(BaseVocabulary):
         """
         assert images_z is not None
 
-        # normalize image embeddings
         images_z = images_z / images_z.norm(dim=-1, keepdim=True)
+        images_z = images_z.cpu().detach().numpy().tolist()
 
-        # query the retrieval system
-        ret_inputs = images_z.cpu().detach().numpy().tolist()
-        ret_results = self.retrieval_client.query(embedding=ret_inputs)
-        vocabularies = [[r.caption for r in result] for result in ret_results]
+        if isinstance(images_z[0], float):
+            images_z = [images_z]
+
+        query = np.matrix(images_z).astype("float32")
+        results = self.database.query(query, modality="text", num_samples=self.num_samples)
+        vocabularies = [[r["caption"] for r in result] for result in results]
 
         return vocabularies
