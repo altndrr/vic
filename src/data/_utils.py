@@ -41,7 +41,8 @@ def download_data(url: str, target: Path, from_gdrive: bool = False) -> None:
     if from_gdrive:
         gdown.download(url, str(target), quiet=False)
     else:
-        with requests.get(url, stream=True, timeout=10.0) as r:
+        header = {"User-Agent": "Mozilla/5.0 (X11; Linux x86_64)"}
+        with requests.get(url, stream=True, timeout=10.0, headers=header) as r:
             r.raise_for_status()
             chunk_size = 8192
             p_bar = track(
