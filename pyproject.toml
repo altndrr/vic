@@ -29,6 +29,7 @@ dependencies = [
     "salesforce-lavis == 1.0.2",
     "transformers == 4.26.1",
     # ---------- others --------- #
+    "faiss-cpu == 1.7.4",
     "flair == 0.12.2",
     "gdown == 4.4.0",
     "inflect == 6.0.4",
