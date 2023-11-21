@@ -1,6 +1,6 @@
 import re
 from abc import ABC, abstractmethod
-from typing import Optional, Union, cast
+from typing import Callable, Optional, Union, cast
 
 import inflect
 import nltk
@@ -475,6 +475,18 @@ def default_image_preprocess(size: Optional[int] = None) -> T.Compose:
     transforms = T.Compose(transforms)
 
     return transforms
+
+
+def default_text_preprocess() -> Callable:
+    """Default preprocessing transforms for text."""
+
+    def text_preprocess(texts: list[str], prompts: Optional[list[str]] = None) -> list[list[str]]:
+        prompts = prompts or ["{}"]
+        texts = [text.replace("_", " ") for text in texts]
+        texts_views = [[p.format(text) for text in texts] for p in prompts]
+        return texts_views
+
+    return text_preprocess
 
 
 def default_vocab_transform() -> TextCompose:
