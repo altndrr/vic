@@ -1,3 +1,6 @@
+from typing import Optional
+
+import numpy as np
 import torch
 
 
@@ -8,21 +11,24 @@ class NearestNeighboursClassifier(torch.nn.Module):
     cosine similarity and then applies a softmax to obtain the logits.
 
     Args:
-        scale (float): Scale for the logits of the query. Defaults to 1.0.
         tau (float): Temperature for the softmax. Defaults to 1.0.
     """
 
-    def __init__(self, scale: float = 1.0, tau: float = 1.0):
+    def __init__(self, tau: float = 1.0) -> None:
         super().__init__()
-        self.scale = scale
+        self.logit_scale = torch.nn.Parameter(torch.ones([]) * np.log(1 / 0.07))
         self.tau = tau
 
-    def forward(self, query: torch.Tensor, supports: torch.Tensor) -> torch.Tensor:
+    def forward(
+        self, query: torch.Tensor, supports: torch.Tensor, mask: Optional[torch.Tensor] = None
+    ) -> torch.Tensor:
         """Forward pass.
 
         Args:
             query (torch.Tensor): Query tensor.
             supports (torch.Tensor): Supports tensor.
+            mask (torch.Tensor, optional): Zero out the similarities for the masked supports.
+                Defaults to None.
         """
         query = query / query.norm(dim=-1, keepdim=True)
         supports = supports / supports.norm(dim=-1, keepdim=True)
@@ -35,8 +41,13 @@ class NearestNeighboursClassifier(torch.nn.Module):
 
         supports = supports.mean(dim=0)
         supports = supports / supports.norm(dim=-1, keepdim=True)
-        similarity = self.scale * query @ supports.T
+        similarity = self.logit_scale.exp() * query @ supports.T
         similarity = similarity / self.tau if self.tau != 1.0 else similarity
+
+        if mask is not None:
+            assert mask.shape[0] == query.shape[0] and mask.shape[1] == supports.shape[0]
+            similarity = torch.masked_fill(similarity, mask == 0, float("-inf"))
+
         logits = similarity.softmax(dim=-1)
 
         return logits
