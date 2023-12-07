@@ -21,6 +21,9 @@ log = utils.get_logger(__name__)
 class CaSED(VocabularyFreeCLIP):
     """LightningModule for Category Search from External Databases.
 
+    Reference:
+        Conti et al. Vocabulary-free Image Classification. NeurIPS 2023.
+
     Args:
         vocabulary (BaseVocabulary): Vocabulary to use.
         vocab_transform (TextCompose, optional): List of transforms to apply to a vocabulary.
