@@ -9,7 +9,10 @@
 [![](http://img.shields.io/badge/paper-arxiv.2306.00917-B31B1B.svg)](https://arxiv.org/abs/2306.00917)
 [![](https://img.shields.io/badge/website-gh--pages.altndrr%2Fvic-success.svg)](https://alessandroconti.me/papers/2306.00917)
 
-# Vocabulary-free Image Classification
+<div>
+<img src="assets/logo.png" width=400px>
+<hr />
+</div>
 
 [Alessandro Conti](https://scholar.google.com/citations?user=EPImyCcAAAAJ), [Enrico Fini](https://scholar.google.com/citations?user=OQMtSKIAAAAJ), [Massimiliano Mancini](https://scholar.google.com/citations?user=bqTPA8kAAAAJ), [Paolo Rota](https://scholar.google.com/citations?user=K1goGQ4AAAAJ), [Yiming Wang](https://scholar.google.com/citations?user=KBZ3zrEAAAAJ), [Elisa Ricci](https://scholar.google.com/citations?user=xf1T870AAAAJ)
 
@@ -174,3 +177,7 @@ make clean-logs
       journal={"NeurIPS},
 }
 ```
+
+## Acknowledgements
+
+We gratefully acknowledge [taap studio](https://instagram.com/taapstudio/) for designing the logo of this project and [ashleve/lightning-hydra-template](https://github.com/ashleve/lightning-hydra-template) for the template used to build this repository.
