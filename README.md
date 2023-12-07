@@ -56,11 +56,11 @@ processor = CLIPProcessor.from_pretrained("openai/clip-vit-large-patch14")
 
 # get the model outputs
 images = processor(images=[image], return_tensors="pt", padding=True)
-outputs = model(images, alpha=0.5)
+outputs = model(images, alpha=0.7)
 labels, scores = outputs["vocabularies"][0], outputs["scores"][0]
 
 # print the top 5 most likely labels for the image
-values, indices = scores.topk(5)
+values, indices = scores.topk(3)
 print("\nTop predictions:\n")
 for value, index in zip(values, indices):
     print(f"{labels[index]:>16s}: {100 * value.item():.2f}%")
