@@ -9,7 +9,10 @@
 [![](http://img.shields.io/badge/paper-arxiv.2306.00917-B31B1B.svg)](https://arxiv.org/abs/2306.00917)
 [![](https://img.shields.io/badge/website-gh--pages.altndrr%2Fvic-success.svg)](https://alessandroconti.me/papers/2306.00917)
 
-# Vocabulary-free Image Classification
+<div>
+<img src="assets/logo.png" width=400px>
+<hr />
+</div>
 
 [Alessandro Conti](https://scholar.google.com/citations?user=EPImyCcAAAAJ), [Enrico Fini](https://scholar.google.com/citations?user=OQMtSKIAAAAJ), [Massimiliano Mancini](https://scholar.google.com/citations?user=bqTPA8kAAAAJ), [Paolo Rota](https://scholar.google.com/citations?user=K1goGQ4AAAAJ), [Yiming Wang](https://scholar.google.com/citations?user=KBZ3zrEAAAAJ), [Elisa Ricci](https://scholar.google.com/citations?user=xf1T870AAAAJ)
 
@@ -56,11 +59,11 @@ processor = CLIPProcessor.from_pretrained("openai/clip-vit-large-patch14")
 
 # get the model outputs
 images = processor(images=[image], return_tensors="pt", padding=True)
-outputs = model(images, alpha=0.5)
+outputs = model(images, alpha=0.7)
 labels, scores = outputs["vocabularies"][0], outputs["scores"][0]
 
 # print the top 5 most likely labels for the image
-values, indices = scores.topk(5)
+values, indices = scores.topk(3)
 print("\nTop predictions:\n")
 for value, index in zip(values, indices):
     print(f"{labels[index]:>16s}: {100 * value.item():.2f}%")
@@ -128,18 +131,6 @@ python src/train.py data=ucf101 experiment=baseline/clip model=clip ++model.mode
 
 Note that since all our approaches are training-free, there is virtually no difference between `train.py` and `eval.py`. However, we still keep them separate for clarity.
 
-### Docker containers
-
-We provide Docker images for the deployment of containerized services. Currently, the only available container is the one for the retrieval server. To start the server, run the following command:
-
-```bash
-# build the Docker images
-docker compose build
-
-# start the server
-docker compose --profile retrieval-server up
-```
-
 ## Development
 
 ### Install pre-commit hooks
@@ -183,8 +174,10 @@ make clean-logs
       title={Vocabulary-free Image Classification},
       author={Alessandro Conti and Enrico Fini and Massimiliano Mancini and Paolo Rota and Yiming Wang and Elisa Ricci},
       year={2023},
-      eprint={2306.00917},
-      archivePrefix={arXiv},
-      primaryClass={cs.CV}
+      journal={"NeurIPS},
 }
 ```
+
+## Acknowledgements
+
+We gratefully acknowledge [taap studio](https://instagram.com/taapstudio/) for designing the logo of this project and [ashleve/lightning-hydra-template](https://github.com/ashleve/lightning-hydra-template) for the template used to build this repository.

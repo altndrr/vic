@@ -2,6 +2,7 @@ from importlib.util import find_spec
 from typing import Optional
 
 from lightning.pytorch.utilities import rank_zero_only
+from omegaconf import OmegaConf
 
 from src.utils import logging_utils
 
@@ -14,10 +15,13 @@ def log_hyperparameters(object_dict: dict) -> None:
 
     Additionally saves:
     - Number of model parameters
+
+    Args:
+        object_dict (dict): Dictionary of objects to log.
     """
     hparams = {}
 
-    cfg = object_dict["cfg"]
+    cfg = OmegaConf.to_container(object_dict["cfg"])
     model = object_dict["model"]
     trainer = object_dict["trainer"]
 
@@ -52,8 +56,13 @@ def log_hyperparameters(object_dict: dict) -> None:
         logger.log_hyperparams(hparams)
 
 
-def get_metric_value(metric_dict: dict, metric_name: str) -> Optional[float]:
-    """Safely retrieves value of the metric logged in LightningModule."""
+def get_metric_value(metric_dict: dict, metric_name: Optional[str]) -> Optional[float]:
+    """Safely retrieves value of the metric logged in LightningModule.
+
+    Args:
+        metric_dict (dict): Dictionary of metrics logged.
+        metric_name (str, optional): Name of the metric to retrieve.
+    """
     if not metric_name:
         log.info("Metric name is None! Skipping metric value retrieval...")
         return None

@@ -1,6 +1,8 @@
 from pathlib import Path
 from typing import Any, Callable, Optional, Union
 
+import torch
+from PIL import Image
 from torchvision.datasets.vision import VisionDataset
 
 __all__ = ["ImageDataset"]
@@ -17,16 +19,18 @@ class ImageDataset(VisionDataset):
     Args:
         root (str): Root directory of dataset where `images` are found.
         images (list[str], optional): List of images. Defaults to None.
-        labels (list[int], optional): List of labels. Defaults to None.
+        labels (list[int] | list[list[int]], optional): List of labels (supports multi-labels).
+            Defaults to None.
         class_names (list[str], optional): List of class names. Defaults to None.
+        classes_to_idx (list[str], optional): Mapping from class names to class indices. Defaults
+            to None.
         transform (Callable | list[Callable], optional): A function/transform that takes in a
             PIL image and returns a transformed version. If a list of transforms is provided, they
             are applied depending on the target label. Defaults to None.
         target_transform (Callable, optional): A function/transform that takes in the target and
-            transforms it.
+            transforms it. Defaults to None.
         return_id (bool, optional): If `True`, the dataset will return also the image path of the
             sample. Defaults to `True`.
-
 
      Attributes:
         class_names (list): List of the class names sorted alphabetically.
@@ -40,11 +44,11 @@ class ImageDataset(VisionDataset):
         self,
         root: str,
         images: Optional[list[str]] = None,
-        labels: Optional[list[int]] = None,
+        labels: Optional[Union[list[int], list[list[int]]]] = None,
         class_names: Optional[list[str]] = None,
+        classes_to_idx: Optional[dict[str, int]] = None,
         transform: Optional[Union[Callable, list[Callable]]] = None,
         target_transform: Optional[Callable] = None,
-        return_id: bool = True,
     ) -> None:
         if not images:
             images = [str(path) for path in Path(root).glob("*/*")]
@@ -63,32 +67,43 @@ class ImageDataset(VisionDataset):
         self.targets = labels
 
         self.class_names = class_names
-        self.classes_to_idx = {c: i for i, c in enumerate(self.class_names)}
+        self.classes_to_idx = classes_to_idx or {c: i for i, c in enumerate(self.class_names)}
 
         self.root = root
         self.transform = transform
         self.target_transform = target_transform
 
-        self.return_id = return_id
         self.loader = default_loader
 
-    def __getitem__(self, index: int):
-        path, target = self.samples[index]
-        sample = self.loader(path)
+    def __getitem__(self, index: int) -> dict:
+        path, targets_idx = self.samples[index]
+        targets_idx = [targets_idx] if isinstance(targets_idx, int) else targets_idx
+        targets_name = [self.class_names[t] for t in targets_idx]
+
+        targets = torch.tensor(targets_idx, dtype=torch.long)
+        image_pil = self.loader(path)
         if self.transform is not None:
             if isinstance(self.transform, list):
-                sample = self.transform[target](sample)
+                image_tensor = self.transform[targets](image_pil)
             else:
-                sample = self.transform(sample)
+                image_tensor = self.transform(image_pil)
         if self.target_transform is not None:
-            target = self.target_transform(target)
+            targets = [self.target_transform(t) for t in targets]
 
-        if self.return_id:
-            return sample, target, self.images[index]
+        targets_one_hot = torch.zeros(len(self.class_names), dtype=torch.long)
+        targets_one_hot[targets] = 1
 
-        return sample, target
+        data = {
+            "images_fp": path,
+            "images_pil": image_pil,
+            "images_tensor": image_tensor,
+            "targets_idx": targets_idx,
+            "targets_one_hot": targets_one_hot,
+            "targets_name": targets_name,
+        }
+        return data
 
-    def __len__(self):
+    def __len__(self) -> int:
         return len(self.samples)
 
     def __repr__(self) -> str:
@@ -116,8 +131,6 @@ def default_loader(path: str) -> Any:
     Returns:
         PIL.Image: The image.
     """
-    from PIL import Image
-
     with open(path, "rb") as f:
         img = Image.open(f)
         return img.convert("RGB")

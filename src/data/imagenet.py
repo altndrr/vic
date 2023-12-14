@@ -1,4 +1,5 @@
 import zipfile
+from contextlib import suppress
 from pathlib import Path
 from typing import Any, Optional
 
@@ -8,10 +9,8 @@ from rich.progress import track
 from src.data._base import BaseDataModule
 from src.data.components.datasets import ImageDataset
 
-try:
+with suppress(OSError):
     import kaggle
-except OSError:
-    pass
 
 
 class ImageNet(BaseDataModule):
@@ -31,25 +30,22 @@ class ImageNet(BaseDataModule):
     """
 
     name: str = "ImageNet"
-    data_url: str = ""
 
     classes: list[str]
 
+    data_url: str = ""
+
     def __init__(
-        self,
-        *args,
-        data_dir: str = "data/",
-        train_val_split: tuple[float, float] = (0.9, 0.1),
-        artifact_dir: str = "artifacts/",
-        **kwargs,
-    ):
-        super().__init__(*args, data_dir=data_dir, train_val_split=train_val_split, **kwargs)
+        self, *args, data_dir: str = "data/", artifact_dir: str = "artifacts/", **kwargs
+    ) -> None:
+        super().__init__(*args, data_dir=data_dir, **kwargs)
 
     @property
-    def num_classes(self):
+    def num_classes(self) -> int:
+        """Get number of classes."""
         return len(self.classes) or 1000
 
-    def prepare_data(self):
+    def prepare_data(self) -> None:
         """Download data if needed."""
         dataset_path = Path(self.hparams.data_dir, self.name)
         if dataset_path.exists():
@@ -104,7 +100,7 @@ class ImageNet(BaseDataModule):
         Path(self.hparams.data_dir, "ILSVRC").rmdir()
         Path(self.hparams.data_dir, "ImageNet", "LOC_val_solution.csv").unlink()
 
-    def setup(self, stage: Optional[str] = None):
+    def setup(self, stage: Optional[str] = None) -> None:
         """Load data.
 
         Set variables: `self.data_train`, `self.data_val`, `self.data_test`.
@@ -131,15 +127,15 @@ class ImageNet(BaseDataModule):
         self.data_train = train_set
         self.data_val = self.data_test = test_set
 
-    def teardown(self, stage: Optional[str] = None):
+    def teardown(self, stage: Optional[str] = None) -> None:
         """Clean up after fit or test."""
         pass
 
-    def state_dict(self):
+    def state_dict(self) -> dict[str, Any]:
         """Extra things to save to checkpoint."""
         return {}
 
-    def load_state_dict(self, state_dict: dict[str, Any]):
+    def load_state_dict(self, state_dict: dict[str, Any]) -> None:
         """Things to do when loading checkpoint."""
         pass
 

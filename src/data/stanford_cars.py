@@ -25,21 +25,25 @@ class StanfordCars(BaseDataModule):
     """
 
     name: str = "StanfordCars"
+
+    classes: list[str]
+
     data_url: dict[str, str] = {
         "train": "http://ai.stanford.edu/~jkrause/car196/cars_train.tgz",
         "test": "http://ai.stanford.edu/~jkrause/car196/cars_test.tgz",
     }
 
-    classes: list[str]
-
-    def __init__(self, *args, data_dir: str = "data/", artifact_dir: str = "artifacts/", **kwargs):
+    def __init__(
+        self, *args, data_dir: str = "data/", artifact_dir: str = "artifacts/", **kwargs
+    ) -> None:
         super().__init__(*args, data_dir=data_dir, **kwargs)
 
     @property
-    def num_classes(self):
+    def num_classes(self) -> int:
+        """Get number of classes."""
         return len(self.classes) or 37
 
-    def prepare_data(self):
+    def prepare_data(self) -> None:
         """Download data if needed."""
         dataset_path = Path(self.hparams.data_dir, self.name)
         if dataset_path.exists():
@@ -54,7 +58,7 @@ class StanfordCars(BaseDataModule):
             dataset_path.mkdir(parents=True, exist_ok=True)
             output_path.rename(dataset_path / split)
 
-    def setup(self, stage: Optional[str] = None):
+    def setup(self, stage: Optional[str] = None) -> None:
         """Load data.
 
         Set variables: `self.data_train` , `self.data_val` and `self.data_test`.
@@ -95,15 +99,15 @@ class StanfordCars(BaseDataModule):
         self.data_val = data["val"]
         self.data_test = data["test"]
 
-    def teardown(self, stage: Optional[str] = None):
+    def teardown(self, stage: Optional[str] = None) -> None:
         """Clean up after fit or test."""
         pass
 
-    def state_dict(self):
+    def state_dict(self) -> dict[str, Any]:
         """Extra things to save to checkpoint."""
         return {}
 
-    def load_state_dict(self, state_dict: dict[str, Any]):
+    def load_state_dict(self, state_dict: dict[str, Any]) -> None:
         """Things to do when loading checkpoint."""
         pass
 

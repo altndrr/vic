@@ -1,8 +1,8 @@
 # @package _global_
 
 defaults:
-  - override /model: vocabulary_free_clip.yaml
-  - override /model/vocabulary: imagenet.yaml
+  - override /model: vocabulary_free_clip
+  - override /model/vocabulary: imagenet
 
 project_name: "vocabulary-free-image-classification"
 tags: ["baseline", "lower"]

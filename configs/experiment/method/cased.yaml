@@ -1,8 +1,8 @@
 # @package _global_
 
 defaults:
-  - override /model: cased.yaml
-  - override /model/vocabulary: retrieval.yaml
+  - override /model: cased
+  - override /model/vocabulary: retrieval
 
 project_name: "vocabulary-free-image-classification"
 tags: ["method"]
@@ -15,7 +15,7 @@ data:
   num_workers: 16
 
 model:
-  alpha: 0.5
+  alpha: 0.7
 
 logger:
   wandb:

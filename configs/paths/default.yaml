@@ -14,7 +14,7 @@ data_dir: ${paths.root_dir}/data
 log_dir: ${paths.root_dir}/logs
 
 # path to model directory
-model_dir: ${paths.root_dir}/model
+model_dir: ${paths.root_dir}/models
 
 # path to output directory, created dynamically by hydra
 # path generation pattern is specified in `configs/hydra/default.yaml`

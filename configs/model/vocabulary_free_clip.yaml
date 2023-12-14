@@ -1,6 +1,6 @@
 _target_: src.models.VocabularyFreeCLIP
 
 defaults:
-  - vocabulary: imagenet.yaml
+  - vocabulary: imagenet
 
 model_name: "ViT-L-14"

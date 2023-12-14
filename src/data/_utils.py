@@ -4,14 +4,30 @@ from pathlib import Path
 
 import gdown
 import requests
+import torch
 from rich.progress import track
 
-from src import utils
 
-log = utils.get_logger(__name__)
+def default_collate_fn(batch: list[dict]) -> dict:
+    """Collate function for dataloader.
+
+    Args:
+        batch (list[dict]): List of samples.
+    """
+    assert isinstance(batch[0], dict)
+
+    collated = {}
+    for key in batch[0].keys():
+        data_type = type(batch[0][key])
+        if data_type == torch.Tensor:
+            collated[key] = torch.stack([item[key] for item in batch])
+        else:
+            collated[key] = [item[key] for item in batch]
+
+    return collated
 
 
-def download_data(url: str, target: Path, from_gdrive: bool = False):
+def download_data(url: str, target: Path, from_gdrive: bool = False) -> None:
     """Download data from a URL.
 
     Args:
@@ -25,7 +41,8 @@ def download_data(url: str, target: Path, from_gdrive: bool = False):
     if from_gdrive:
         gdown.download(url, str(target), quiet=False)
     else:
-        with requests.get(url, stream=True, timeout=10.0) as r:
+        header = {"User-Agent": "Mozilla/5.0 (X11; Linux x86_64)"}
+        with requests.get(url, stream=True, timeout=10.0, headers=header) as r:
             r.raise_for_status()
             chunk_size = 8192
             p_bar = track(
@@ -38,7 +55,7 @@ def download_data(url: str, target: Path, from_gdrive: bool = False):
                     f.write(chunk)
 
 
-def extract_data(target):
+def extract_data(target: Path) -> None:
     """Extract data from an archive.
 
     Supported formats: zip, tar, tar.gz.

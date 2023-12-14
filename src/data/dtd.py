@@ -25,18 +25,22 @@ class DTD(BaseDataModule):
     """
 
     name: str = "DTD"
-    data_url: str = "https://www.robots.ox.ac.uk/~vgg/data/dtd/download/dtd-r1.0.1.tar.gz"
 
     classes: list[str]
 
-    def __init__(self, *args, data_dir: str = "data/", artifact_dir: str = "artifacts/", **kwargs):
+    data_url: str = "https://www.robots.ox.ac.uk/~vgg/data/dtd/download/dtd-r1.0.1.tar.gz"
+
+    def __init__(
+        self, *args, data_dir: str = "data/", artifact_dir: str = "artifacts/", **kwargs
+    ) -> None:
         super().__init__(*args, data_dir=data_dir, **kwargs)
 
     @property
-    def num_classes(self):
+    def num_classes(self) -> int:
+        """Get number of classes."""
         return len(self.classes) or 47
 
-    def prepare_data(self):
+    def prepare_data(self) -> None:
         """Download data if needed."""
         dataset_path = Path(self.hparams.data_dir, self.name)
         if dataset_path.exists():
@@ -51,7 +55,7 @@ class DTD(BaseDataModule):
         output_path = Path(self.hparams.data_dir, "dtd")
         output_path.rename(dataset_path)
 
-    def setup(self, stage: Optional[str] = None):
+    def setup(self, stage: Optional[str] = None) -> None:
         """Load data.
 
         Set variables: `self.data_train` , `self.data_val` and `self.data_test`.
@@ -89,15 +93,15 @@ class DTD(BaseDataModule):
         self.data_val = data["val"]
         self.data_test = data["test"]
 
-    def teardown(self, stage: Optional[str] = None):
+    def teardown(self, stage: Optional[str] = None) -> None:
         """Clean up after fit or test."""
         pass
 
-    def state_dict(self):
+    def state_dict(self) -> dict[str, Any]:
         """Extra things to save to checkpoint."""
         return {}
 
-    def load_state_dict(self, state_dict: dict[str, Any]):
+    def load_state_dict(self, state_dict: dict[str, Any]) -> None:
         """Things to do when loading checkpoint."""
         pass
 

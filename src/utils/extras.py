@@ -1,3 +1,4 @@
+import logging
 import warnings
 
 import lovely_tensors as lt
@@ -24,6 +25,13 @@ def extras(cfg: DictConfig) -> None:
         log.warning("Extras config not found! <cfg.extras=null>")
         return
 
+    # disable specific loggers
+    if cfg.extras.get("disable_loggers"):
+        disable_loggers = cfg.extras.disable_loggers
+        log.info(f"Ignoring loggers! <cfg.extras.{disable_loggers=}>")
+        for disable_logger in disable_loggers:
+            logging.getLogger(disable_logger).setLevel(logging.ERROR)
+
     # disable python warnings
     if cfg.extras.get("ignore_warnings"):
         log.info("Disabling python warnings! <cfg.extras.ignore_warnings=True>")
@@ -33,11 +41,6 @@ def extras(cfg: DictConfig) -> None:
     if cfg.extras.get("enforce_tags"):
         log.info("Enforcing tags! <cfg.extras.enforce_tags=True>")
         rich_utils.enforce_tags(cfg, save_to_file=True)
-
-    # pretty print config tree using Rich library
-    if cfg.extras.get("print_config"):
-        log.info("Printing config tree with Rich! <cfg.extras.print_config=True>")
-        rich_utils.print_config_tree(cfg, resolve=True, save_to_file=True)
 
     # monkey-patch tensor classes to have pretty representations
     if cfg.extras.get("lovely_tensors"):
@@ -49,3 +52,8 @@ def extras(cfg: DictConfig) -> None:
         matmul_precision = cfg.extras.matmul_precision
         log.info(f"Setting precision of matrix multiplication! <cfg.extras.{matmul_precision=}>")
         torch.set_float32_matmul_precision(matmul_precision)
+
+    # pretty print config tree using Rich library
+    if cfg.extras.get("print_config"):
+        log.info("Printing config tree with Rich! <cfg.extras.print_config=True>")
+        rich_utils.print_config_tree(cfg, resolve=True, save_to_file=True)

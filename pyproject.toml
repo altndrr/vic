@@ -4,7 +4,7 @@ build-backend = "flit_core.buildapi"
 
 [project]
 name = "vic"
-version = "1.0.0"
+version = "2.0.0"
 description = "Vocabulary-free Image Classification"
 readme = "README.md"
 requires-python = ">=3.9,<3.11"
@@ -29,6 +29,7 @@ dependencies = [
     "salesforce-lavis == 1.0.2",
     "transformers == 4.26.1",
     # ---------- others --------- #
+    "faiss-cpu == 1.7.4",
     "flair == 0.12.2",
     "gdown == 4.4.0",
     "inflect == 6.0.4",
@@ -69,6 +70,14 @@ ignore = ["E402"]
 per-file-ignores = ["__init__.py:F401"]
 exclude = ["data/*","logs/*"]
 max-line-length = 99
+
+[tool.interrogate]
+fail-under = 100
+ignore-init-module = true
+ignore-init-method = true
+ignore-magic = true
+ignore-module = true
+ignore-nested-functions = true
 
 [tool.flit.module]
 name = "src"

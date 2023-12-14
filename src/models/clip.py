@@ -2,15 +2,14 @@ from typing import Any, Optional
 
 import open_clip
 import torch
-import torch.nn.functional as F
-from torchmetrics import Accuracy, MetricCollection
+from torchmetrics import MetricCollection
 from torchmetrics.aggregation import MeanMetric
 
 from src import utils
 from src.models._base import VisionLanguageModel
 from src.models.components.metrics import (
     SemanticClusterAccuracy,
-    SemanticIOU,
+    SentenceIOU,
     SentenceScore,
     UniqueValues,
 )
@@ -44,25 +43,45 @@ class CLIP(VisionLanguageModel):
         prompt: str = "a photo of a {}",
         prompts_fp: Optional[str] = None,
         **kwargs,
-    ):
-        self.metrics = None
-        self.preprocess = None
-        self.prompts = None
+    ) -> None:
         self._class_names = None
         self._model_name = model_name
         self._prompt = prompt
         self._prompts_fp = prompts_fp
         self._texts_views = None
         self._texts_z_views = None
+        self.prompts = None
 
         # load model
         assert model_name in open_clip.list_models()
         model, _, preprocess = open_clip.create_model_and_transforms(
             model_name, pretrained=pretrained, device="cpu"
         )
-        tokenizer = open_clip.get_tokenizer(model_name)
-        self.tokenizer = tokenizer
-        self.preprocess = preprocess
+
+        # create submodules
+        language_encoder = LanguageTransformer(
+            model.transformer,
+            model.token_embedding,
+            model.positional_embedding,
+            model.ln_final,
+            model.text_projection,
+            model.attn_mask,
+        )
+        classifier = NearestNeighboursClassifier(tau=kwargs.get("tau", 1.0))
+        classifier.logit_scale = model.logit_scale
+
+        # init base class
+        super().__init__(
+            *args,
+            vision_encoder=model.visual,
+            language_encoder=language_encoder,
+            tokenizer=open_clip.get_tokenizer(model_name),
+            classifier=classifier,
+            **kwargs,
+        )
+
+        # set preprocess functions
+        self.image_preprocess = preprocess
 
         # create text inputs
         self.prompts = [prompt]
@@ -74,30 +93,8 @@ class CLIP(VisionLanguageModel):
         kwargs["tau"] = kwargs.get("tau", 1.0)
         self.save_hyperparameters("model_name", "pretrained", "prompt", "prompts_fp", "tau")
 
-        # create submodules
-        language_encoder = LanguageTransformer(
-            model.transformer,
-            model.token_embedding,
-            model.positional_embedding,
-            model.ln_final,
-            model.text_projection,
-            model.attn_mask,
-        )
-        scale = model.logit_scale.exp().item()
-        classifier = NearestNeighboursClassifier(scale=scale, tau=self.hparams.tau)
-
-        # init base class
-        super().__init__(
-            *args,
-            vision_encoder=model.visual,
-            language_encoder=language_encoder,
-            classifier=classifier,
-            custom_preprocess=preprocess,
-            **kwargs,
-        )
-
     @property
-    def texts_views(self) -> torch.Tensor:
+    def texts_views(self) -> list[list[str]]:
         """Get text inputs for the text encoder.
 
         The number of text inputs is equal to the number of classes and the number of views is
@@ -108,9 +105,7 @@ class CLIP(VisionLanguageModel):
 
         if self._class_names is None:
             self._class_names = self.trainer.datamodule.classes
-        classes = [c.replace("_", " ") for c in self._class_names]
-        texts_views = [[p.format(c) for c in classes] for p in self.prompts]
-        self._texts_views = texts_views
+        self._texts_views = self.text_preprocess(self._class_names, prompts=self.prompts)
 
         return self._texts_views
 
@@ -124,102 +119,72 @@ class CLIP(VisionLanguageModel):
         if self._texts_z_views is not None:
             return self._texts_z_views
 
-        tokenized_texts_views = [
-            torch.cat([self.tokenizer(prompt) for prompt in text_views]).to(self.device)
-            for text_views in self.texts_views
-        ]
-        tokenized_texts_views = torch.stack(tokenized_texts_views)
-
-        T, C, _ = tokenized_texts_views.shape
-        texts_z_views = self.language_encoder(tokenized_texts_views.view(T * C, -1))
-        texts_z_views = texts_z_views.view(T, C, -1)
+        texts_z_views = self.encode_text(self.texts_views)
         texts_z_views = texts_z_views / texts_z_views.norm(dim=-1, keepdim=True)
         self._texts_z_views = texts_z_views
 
         return self._texts_z_views
 
-    def setup(self, stage: str) -> None:
-        """Setup the model.
+    def test_step(self, batch: dict, batch_idx: int, dataloader_idx: int = 0) -> None:
+        """Lightning test step.
 
         Args:
-            stage (str): Stage of the model.
+            batch (dict): Batch of data.
+            batch_idx (int): Index of the batch.
+            dataloader_idx (int, optional): Index of the dataloader. Defaults to 0.
         """
-        super().setup(stage)
+        images = batch["images_tensor"]
+        targets = batch["targets_name"]
+        classes = self.trainer.datamodule.classes
 
-        # init metrics
-        self.metrics = torch.nn.ModuleDict()
-        acc_kwargs = {"task": "multiclass", "num_classes": len(self.trainer.datamodule.classes)}
-
-        # loss metrics
-        self.metrics["test/loss"] = MeanMetric()
-
-        # classification metrics
-        self.metrics["test/acc"] = MetricCollection(
-            {f"test/acc@{k}": Accuracy(**acc_kwargs, top_k=k) for k in (1, 3, 5)}
-        )
-
-        # vocabulary metrics
-        self.metrics["test/vocab_size"] = MeanMetric()
-        self.metrics["test/unique_candidates"] = UniqueValues()
-        self.metrics["test/unique_names"] = UniqueValues()
-
-        # semantic metrics
-        semantic_metrics = {}
-        semantic_metrics["test/semantic_cluster_acc"] = SemanticClusterAccuracy()
-        semantic_metrics["test/semantic_iou"] = SemanticIOU()
-        semantic_metrics["test/semantic_similarity"] = SentenceScore()
-        self.metrics["test/semantic_metrics"] = MetricCollection(semantic_metrics)
-
-    def batch_step(self, images: torch.Tensor, texts_z: torch.Tensor) -> tuple:
-        """Perform a single batch step.
-
-        Args:
-            images (torch.Tensor): Batch of images.
-            texts_z (torch.Tensor): Batch of text embeddings.
-        """
+        # get vocabularies for each image
         images_z = self.vision_encoder(images)
-        images_p = self.classifier(images_z, texts_z)
-        texts_p = images_p.t()
+        images_vocab = [classes] * len(images)
 
-        return images_p, texts_p, images_z, texts_z
-
-    def test_step(self, batch: list, batch_idx: int) -> torch.Tensor:
-        images, targets = batch[0], batch[1]
-
-        # compute loss
-        images_p, _, _, _ = self.batch_step(images, self.texts_z_views)
-        loss = F.nll_loss(torch.log(images_p), targets, reduction="mean")
+        # get predictions for each image
+        images_p = self.classifier(images_z, self.texts_z_views)
+        preds = images_p.topk(k=1, dim=-1)
+        images_words = [[classes[idx] for idx in indices.tolist()] for indices in preds.indices]
+        images_words_values = preds.values.tolist()
+        words = [
+            {word: sum([v for w, v in zip(iw, iwv) if w == word]) for word in set(iw)}
+            for iw, iwv in zip(images_words, images_words_values)
+        ]
 
         # log metrics
-        self.metrics["test/loss"](loss)
-        self.log("test/loss", self.metrics["test/loss"], prog_bar=True)
-        self.metrics["test/acc"](images_p, targets)
-        self.log_dict(self.metrics["test/acc"], prog_bar=True)
+        num_vocabs = torch.tensor([len(image_vocab) for image_vocab in images_vocab])
+        num_vocabs = num_vocabs.to(self.device)
+        self.metrics["test/num_vocabs_avg"](num_vocabs)
+        self.log("test/num_vocabs.avg", self.metrics["test/num_vocabs_avg"])
+        self.metrics["test/vocabs_unique"](images_vocab)
+        self.log("test/vocabs.unique", self.metrics["test/vocabs_unique"])
+        self.metrics["test/vocabs/selected_unique"](sum([list(w.keys()) for w in words], []))
+        self.log("test/vocabs/selected.unique", self.metrics["test/vocabs/selected_unique"])
 
-        # log vocabulary metrics
-        vocabs = self.texts_views
-        preds = images_p.argmax(dim=-1)
-        words = [self.trainer.datamodule.classes[p] for p in preds]
-        self.metrics["test/vocab_size"](sum(len(vocab) for vocab in vocabs))
-        self.log("test/vocab_size", self.metrics["test/vocab_size"], prog_bar=True)
-        self.metrics["test/unique_candidates"](vocabs)
-        self.log("test/unique_candidates", self.metrics["test/unique_candidates"], prog_bar=True)
-        self.metrics["test/unique_names"](words)
-        self.log("test/unique_names", self.metrics["test/unique_names"], prog_bar=True)
+        self.test_outputs.append((words, targets))
 
-        # store outputs for later evaluation
-        semantic_targets = [self.trainer.datamodule.classes[t] for t in targets]
-        self.test_outputs.append((words, semantic_targets))
-
-    def on_test_epoch_end(self):
-        # log semantic metrics
-        words, semantic_targets = zip(*self.test_outputs)
+    def on_test_epoch_end(self) -> None:
+        """Lightning hook called at the end of the test epoch."""
+        words, targets = zip(*self.test_outputs)
         words = sum(words, [])
-        semantic_targets = sum(semantic_targets, [])
-        self.metrics["test/semantic_metrics"](words, semantic_targets)
+        targets = sum(targets, [])
+        self.metrics["test/semantic_metrics"](words, targets)
         self.log_dict(self.metrics["test/semantic_metrics"])
 
         super().on_test_epoch_end()
+
+    def configure_metrics(self) -> None:
+        """Configure metrics."""
+        self.metrics["test/num_vocabs_avg"] = MeanMetric()
+        self.metrics["test/vocabs_unique"] = UniqueValues()
+        self.metrics["test/vocabs/selected_unique"] = UniqueValues()
+
+        semantic_metrics = {}
+        semantic_cluster_acc = SemanticClusterAccuracy(task="multiclass", average="micro")
+        semantic_metrics["test/semantic_cluster_acc"] = semantic_cluster_acc
+        semantic_metrics["test/semantic_iou"] = SentenceIOU()
+        semantic_metrics["test/semantic_similarity"] = SentenceScore()
+        self.metrics["test/semantic_metrics"] = MetricCollection(semantic_metrics)
 
     @property
     def learnable_params(self) -> list[dict[str, Any]]:

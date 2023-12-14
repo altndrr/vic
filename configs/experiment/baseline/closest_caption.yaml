@@ -1,8 +1,8 @@
 # @package _global_
 
 defaults:
-  - override /model: vocabulary_free_clip.yaml
-  - override /model/vocabulary: retrieval.yaml
+  - override /model: vocabulary_free_clip
+  - override /model/vocabulary: retrieval
 
 project_name: "vocabulary-free-image-classification"
 tags: ["baseline", "lower"]
@@ -16,8 +16,7 @@ data:
 
 model:
   vocabulary:
-    retrieval_client:
-      num_samples: 1
+    num_samples: 1
 
 logger:
   wandb:
