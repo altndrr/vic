@@ -1,5 +1,4 @@
 import torch
-from torchmetrics import MetricCollection
 from torchmetrics.aggregation import MeanMetric
 
 from src import utils
@@ -122,6 +121,10 @@ class VocabularyFreeCLIP(CLIP):
         self.log("test/vocabs.unique", self.metrics["test/vocabs_unique"])
         self.metrics["test/vocabs/selected_unique"](sum([list(w.keys()) for w in words], []))
         self.log("test/vocabs/selected.unique", self.metrics["test/vocabs/selected_unique"])
+        self.metrics["test/semantic_iou"](words, targets)
+        self.log("test/semantic_iou", self.metrics["test/semantic_iou"])
+        self.metrics["test/semantic_similarity"](words, targets)
+        self.log("test/semantic_similarity", self.metrics["test/semantic_similarity"])
 
         self.test_outputs.append((words, targets))
 
@@ -130,13 +133,10 @@ class VocabularyFreeCLIP(CLIP):
         self.metrics["test/num_vocabs_avg"] = MeanMetric()
         self.metrics["test/vocabs_unique"] = UniqueValues()
         self.metrics["test/vocabs/selected_unique"] = UniqueValues()
-
-        semantic_metrics = {}
         semantic_cluster_acc = SemanticClusterAccuracy(task="multiclass", average="micro")
-        semantic_metrics["test/semantic_cluster_acc"] = semantic_cluster_acc
-        semantic_metrics["test/semantic_iou"] = SentenceIOU()
-        semantic_metrics["test/semantic_similarity"] = SentenceScore()
-        self.metrics["test/semantic_metrics"] = MetricCollection(semantic_metrics)
+        self.metrics["test/semantic_cluster_acc"] = semantic_cluster_acc
+        self.metrics["test/semantic_iou"] = SentenceIOU()
+        self.metrics["test/semantic_similarity"] = SentenceScore()
 
 
 if __name__ == "__main__":
