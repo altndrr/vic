@@ -113,6 +113,8 @@ class SentenceScore(Metric):
 
         values_z = self.encoder([max(value, key=value.get) for value in values])
         targets_z = self.encoder(targets)
+        values_z = values_z.unsqueeze(0) if values_z.dim() == 1 else values_z
+        targets_z = targets_z.unsqueeze(0) if targets_z.dim() == 1 else targets_z
 
         # compute cosine similarity
         similarity = torch.nn.functional.cosine_similarity(values_z, targets_z)
