@@ -174,7 +174,7 @@ make clean-logs
       title={Vocabulary-free Image Classification},
       author={Alessandro Conti and Enrico Fini and Massimiliano Mancini and Paolo Rota and Yiming Wang and Elisa Ricci},
       year={2023},
-      journal={"NeurIPS},
+      journal={NeurIPS},
 }
 ```
 
