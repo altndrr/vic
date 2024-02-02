@@ -125,16 +125,6 @@ class VocabularyFreeCLIP(CLIP):
 
         self.test_outputs.append((words, targets))
 
-    def on_test_epoch_end(self) -> None:
-        """Lightning hook called at the end of the test epoch."""
-        words, targets = zip(*self.test_outputs)
-        words = sum(words, [])
-        targets = sum(targets, [])
-        self.metrics["test/semantic_metrics"](words, targets)
-        self.log_dict(self.metrics["test/semantic_metrics"])
-
-        super().on_test_epoch_end()
-
     def configure_metrics(self) -> None:
         """Configure metrics."""
         self.metrics["test/num_vocabs_avg"] = MeanMetric()
